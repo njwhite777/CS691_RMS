@@ -1,0 +1,6 @@
+{% extends "main/main_base.html" %}  {# main/main_base.html extends layout.html #}
+
+{% block content %}
+    <p><a href={{ url_for('main.home_page') }}>{%trans%}Menu Page{%endtrans%}</a> (Anyone can see this.)</p>
+    <p><a href={{ url_for('main.admin_page') }}>{%trans%}Owner + Host/Server Page{%endtrans%}</a> (login_required: member@example.com / Password1)</p>
+{% endblock %}

@@ -17,6 +17,10 @@ main_blueprint = Blueprint('main', __name__, template_folder='templates')
 def home_page():
     return render_template('main/home_page.html')
 
+# The Home page is accessible to anyone
+@main_blueprint.route('/_users')
+def users_page():
+    return render_template('main/_users.html')
 
 # The User page is accessible to authenticated users (users that have logged in)
 @main_blueprint.route('/member')
@@ -52,5 +56,3 @@ def user_profile_page():
     # Process GET or invalid POST
     return render_template('main/user_profile_page.html',
                            form=form)
-
-
