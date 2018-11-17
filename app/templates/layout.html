@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- These 3 meta tags MUST come first -->
 
-        <title>Flask-User Starter App</title>
+        <title>Flavortownne</title>
 
         <!-- Bootstrap CSS and JS -->
         <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -22,10 +22,12 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
     </head>
     <body>
+        <!-- HEADER -->
         {% block body %}
         <!-- Application specific HTML -->
         <div id="header-div" class="clearfix with-margins">
-            <div class="pull-left"><a href="/"><h1 class="no-margins">Flask-User starter app</h1></a></div>
+            <div class="pull-left"><a href="/"><h1 class="no-margins">Flavortownne</h1></a>            <h3 class="no-margins">Welcome to Flavortownne</h3>
+</div>
             <div class="pull-right">
                 {% if current_user.is_authenticated %}
                     <a href="{{ url_for('main.user_profile_page') }}">{{ current_user.first_name or current_user.username or current_user.email }}</a>
@@ -36,38 +38,43 @@
                 {% endif %}
             </div>
         </div>
-        <hr class="no-margins"/>
+        <!-- BODY -->
+        <div id="wrap">
+          <div id="main-div main" class="with-margins">
+          {% block pre_content %}{% endblock %}
+          {# One-time system messages called Flash messages #}
+          {% block flash_messages %}
+              {%- with messages = get_flashed_messages(with_categories=true) -%}
+                  {% if messages %}
+                      {% for category, message in messages %}
+                          {% if category=='error' %}
+                              {% set category='danger' %}
+                          {% endif %}
+                          <div class="alert alert-{{category}}">{{ message|safe }}</div>
+                      {% endfor %}
+                  {% endif %}
+              {%- endwith %}
+          {% endblock %}
 
-        <div id="main-div" class="with-margins">
-        {% block pre_content %}{% endblock %}
+          {% block content %}{% endblock %}
 
-        {# One-time system messages called Flash messages #}
-        {% block flash_messages %}
-            {%- with messages = get_flashed_messages(with_categories=true) -%}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        {% if category=='error' %}
-                            {% set category='danger' %}
-                        {% endif %}
-                        <div class="alert alert-{{category}}">{{ message|safe }}</div>
-                    {% endfor %}
-                {% endif %}
-            {%- endwith %}
-        {% endblock %}
-
-        {% block content %}{% endblock %}
-
-        {% block post_content %}{% endblock %}
+          {% block post_content %}{% endblock %}
+          </div>
         </div>
 
-        <br/>
-        <hr class="no-margins"/>
-        <div id="footer-div" class="clearfix with-margins">
+        <!-- FOOTER -->
+        <footer class="footer navbar-fixed-bottom with-margins">
+            <hr>
+            <div class="with-margins">
             <div class="pull-left">{{ user_manager.app_name }} v1.0</div>
-            <div class="pull-right">&copy; 2014 MyCorp</div>
-        </div>
+            <div class="pull-right">&copy; 2018 Flavortownne</div>
+            </div
+        </footer>
 
         <!-- Bootstrap JS -->
+
+
+
         <script src="{{ url_for('static', filename='bootstrap/js/jquery.min.js') }}"></script>
         <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
 

@@ -63,6 +63,8 @@ def create_app(extra_config_settings={}):
     # Setup Flask-User to handle user account related forms
     from .models.user_models import User
     from .views.main_views import user_profile_page
+    import datetime
+
 
     # Setup Flask-User
     user_manager = UserManager(app, db, User)
@@ -109,8 +111,3 @@ def init_email_error_handler(app):
     app.logger.addHandler(mail_handler)
 
     # Log errors using: app.logger.error('Some error message')
-
-
-
-
-

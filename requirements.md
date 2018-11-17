@@ -4,7 +4,7 @@ Original Text: "I want to have a list of menu items with ingredients, allergen i
 
 #### High Priority
 1. Menu Requirements:
-  1.1 The user side application will include a list of menu items.
+  1.1 The user facing application will include a list of menu items.
   1.2 Item Listings:
     - Menu items on the user side application will list ingredients.
     - Menu items on the user side application will allergy
