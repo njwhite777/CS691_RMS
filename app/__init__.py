@@ -4,13 +4,15 @@
 from datetime import datetime
 import os
 
-from flask import Flask
+from flask import Flask,Blueprint
 from flask_script import Manager
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 from flask_migrate import Migrate, MigrateCommand
 from flask_user import UserManager
 from flask_wtf.csrf import CSRFProtect
+from flask_restful import Resource, Api
+
 
 
 # Instantiate Flask extensions
@@ -26,6 +28,10 @@ def create_app(extra_config_settings={}):
     # Instantiate Flask
     app = Flask(__name__)
 
+    from .resources import setupResources
+    api = Api(app)
+    setupResources(api)
+    
     # Load common settings
     app.config.from_object('app.settings')
     # Load environment specific settings
