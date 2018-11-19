@@ -11,7 +11,7 @@ from app import db
 
 # Define the User data model. Make sure to add the flask_user.UserMixin !!
 class User(db.Model, UserMixin):
-    __tablename__ = 'Users'
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
 
     # User authentication information (required for Flask-User)
@@ -27,13 +27,13 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.Unicode(50), nullable=False, server_default=u'')
 
     # Relationships
-    roles = db.relationship('Role', secondary='UserRoles',
-                            backref=db.backref('Users', lazy='dynamic'))
+    roles = db.relationship('Role', secondary='user_roles',
+                            backref=db.backref('users', lazy='dynamic'))
 
 
 # Define the Role data model
 class Role(db.Model):
-    __tablename__ = 'Roles'
+    __tablename__ = 'roles'
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(50), nullable=False, server_default=u'', unique=True)  # for @roles_accepted()
     label = db.Column(db.Unicode(255), server_default=u'')  # for display purposes
@@ -41,7 +41,7 @@ class Role(db.Model):
 
 # Define the UserRoles association model
 class UsersRoles(db.Model):
-    __tablename__ = 'UserRoles'
+    __tablename__ = 'user_roles'
     id = db.Column(db.Integer(), primary_key=True)
     user_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete='CASCADE'))
     role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))

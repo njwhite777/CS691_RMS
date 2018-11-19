@@ -62,9 +62,8 @@ def create_app(extra_config_settings={}):
 
     # Setup Flask-User to handle user account related forms
     from .models.user_models import User
+    from .models.menuItem_models import MenuItem, Menu
     from .views.main_views import user_profile_page
-    import datetime
-
 
     # Setup Flask-User
     user_manager = UserManager(app, db, User)

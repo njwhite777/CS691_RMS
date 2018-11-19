@@ -11,6 +11,7 @@ from flask_script import Command
 
 from app import db
 from app.models.user_models import User, Role
+from app.models.menuItem_models import Menu, MenuItem, MenuItems
 
 class InitDbCommand(Command):
     """ Initialize the database."""
@@ -24,6 +25,7 @@ def init_db():
     db.drop_all()
     db.create_all()
     create_users()
+    create_menu_item()
 
 
 def create_users():
@@ -41,6 +43,37 @@ def create_users():
 
     # Save to DB
     db.session.commit()
+
+def create_menu_item():
+    # Note: Assuming the db.create_all() command has already been called.
+    find_or_create_menu("General")
+    db.session.commit()
+    find_or_create_menu_item("Risoto De Milano","27",active=True,category="Dinner")
+    find_or_create_menu_item("Shrimp Skampi","22",active=True,category="Dinner")
+    find_or_create_menu_item("Spagetti","22",active=True,category="Lunch")
+    find_or_create_menu_item("Breadsticks","22",active=True,category="Appetizer")
+    find_or_create_menu_item("Eggplant Parmesean","25",active=False,category="Dinner")
+    db.session.commit()
+
+def find_or_create_menu(name):
+    menu = Menu.query.filter(Menu.name==name).first()
+    if not menu:
+        menu = Menu(name=name)
+        db.session.add(menu)
+    return menu
+
+def find_or_create_menu_item(name,price,menu_name="General",active=None,category=None,information=None,ingredients=None,allergy_information=None):
+    menu = Menu.query.filter(Menu.name==menu_name).first()
+    menuItem = MenuItem.query.filter(MenuItem.name==name).first()
+    if not menuItem:
+        menuItem = MenuItem(name=name,price=price,active=None,category=None,information=None,ingredients=None,allergy_information=None)
+        db.session.add(menuItem)
+        db.session.commit()
+
+        menuItems = MenuItems(menu_id=menu.id,item_id=menuItem.id)
+        db.session.add(menuItems)
+        db.session.commit()
+    return menuItem
 
 
 def find_or_create_role(name, label):
@@ -66,6 +99,3 @@ def find_or_create_user(first_name, last_name, email, password, role=None):
             user.roles.append(role)
         db.session.add(user)
     return user
-
-
-

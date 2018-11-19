@@ -6,21 +6,24 @@ from app import db
 
 
 class MenuItem(db.Model):
-    __tablename__ = 'MenuItem'
+    __tablename__ = 'menu_item'
     id = db.Column(db.Integer, primary_key=True)
 
     name = db.Column(db.String(255), nullable=False, server_default='')
     price = db.Column(db.String(255), nullable=False, server_default='')
-    active = db.Column(db.Float(), nullable=False, server_default='0')
+    active = db.Column(db.Boolean(), nullable=False, server_default='0')
     category = db.Column(db.String(255), nullable=False, server_default='')
     information = db.Column(db.String(255), nullable=False, server_default='')
     ingredients = db.Column(db.String(255), nullable=False, server_default='')
     allergy_information = db.Column(db.String(255), nullable=False, server_default='')
 
-    # Relationships
-    # roles = db.relationship('Role', secondary='Menu', backref=db.backref('Menu', lazy='dynamic'))
+class MenuItems(db.Model):
+    __tablename__ = 'menu_items'
+    menu_id = db.Column(db.Integer, primary_key=True)
+    item_id = db.Column(db.Integer, primary_key=True)
 
 class Menu(db.Model):
-    __tablename__ = 'Menu'
+    __tablename__ = 'menu'
+
     id = db.Column(db.Integer, primary_key=True)
-    menu_id = db.Column(db.Integer())
+    name = db.Column(db.String(255),nullable=False)

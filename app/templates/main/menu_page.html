@@ -1,1 +1,7 @@
-{% extends "main/main_base.html" %}  {# main/main_base.html extends layout.html #}
+{% extends "main/main_base.html" %}
+{# main/main_base.html extends layout.html #}
+{% block content %}
+  {% for item in menuItems %}
+    <li>{{ item.name }}</li>
+  {% endfor %}
+{% endblock %}
