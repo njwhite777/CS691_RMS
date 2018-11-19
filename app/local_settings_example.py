@@ -29,8 +29,8 @@ MAIL_PASSWORD = 'password'
 # Sendgrid settings
 SENDGRID_API_KEY='place-your-sendgrid-api-key-here'
 
-# Flask-User settings
-USER_APP_NAME = 'Flask-User starter app'
+# App settings
+USER_APP_NAME = 'Flavortownne'
 USER_EMAIL_SENDER_NAME = 'Your name'
 USER_EMAIL_SENDER_EMAIL = 'yourname@gmail.com'
 

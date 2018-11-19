@@ -1,0 +1,16 @@
+{% extends "main/main_base.html" %}
+{# main/main_base.html extends layout.html #}
+{% block content %}
+  {% for item in menuItems %}
+    <div class="panel panel-default">
+      <div class="panel-heading">{{ item.name }} - ${{ item.price }}
+        {% if editable %}
+        <button type="button" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" >
+          <i class="material-icons ">edit</i>
+        </button>
+        {% endif %}
+      </div>
+      <div class="panel-body">{{ item.information }} </div>
+    </div>
+  {% endfor %}
+{% endblock %}

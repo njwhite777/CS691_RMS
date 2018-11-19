@@ -11,6 +11,8 @@
 
         <!-- Bootstrap CSS and JS -->
         <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -29,8 +31,14 @@
             <div class="pull-left"><a href="/"><h1 class="no-margins">Flavortownne</h1></a>            <h3 class="no-margins">Welcome to Flavortownne</h3>
 </div>
             <div class="pull-right">
-                {% if current_user.is_authenticated %}
+                {% if current_user.is_authenticated and not current_user.has_roles('admin') %}
                     <a href="{{ url_for('main.user_profile_page') }}">{{ current_user.first_name or current_user.username or current_user.email }}</a>
+                    &nbsp; | &nbsp;
+                    <a href="{{ url_for('user.logout') }}">Sign out</a>
+                {% elif current_user.is_authenticated and current_user.has_roles('admin') %}
+                    <a href="{{ url_for('main.user_profile_page') }}">{{ current_user.first_name or current_user.username or current_user.email }}</a>
+                    &nbsp; | &nbsp;
+                    <a href="{{ url_for('main.edit_menu_page') }}">Edit Menu</a>
                     &nbsp; | &nbsp;
                     <a href="{{ url_for('user.logout') }}">Sign out</a>
                 {% else %}
@@ -72,9 +80,6 @@
         </footer>
 
         <!-- Bootstrap JS -->
-
-
-
         <script src="{{ url_for('static', filename='bootstrap/js/jquery.min.js') }}"></script>
         <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
 

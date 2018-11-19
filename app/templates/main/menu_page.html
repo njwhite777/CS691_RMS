@@ -2,6 +2,25 @@
 {# main/main_base.html extends layout.html #}
 {% block content %}
   {% for item in menuItems %}
-    <li>{{ item.name }}</li>
+    <script src="{{ url_for('static', filename='js/edit_menu.js') }}"></script>
+    <div class="panel panel-default" id="panel_item_{{loop.index}}">
+      <div class="panel-heading"><span id="name_{{loop.index}}">{{ item.name }}</span> - $<span id="price_{{loop.index}}">{{ item.price }}</span>
+        {% if editable %}
+        <button id="edit_button_{{ loop.index }}" type="button" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="makeEditable({{loop.index}})">
+          <i class="material-icons ">edit</i>
+        </button>
+        <button id="save_button_{{ loop.index }}" type="button" style="visibility:hidden;" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="saveEdits({{loop.index}})">
+          <i class="material-icons">save_alt</i>
+        </button>
+        <button id="discard_button_{{ loop.index }}" type="button" style="visibility:hidden;" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="discardEdits({{loop.index}})">
+          <i class="material-icons">clear</i>
+        </button>
+        {% endif %}
+      </div>
+      <div class="panel-body">
+        <div id="information_{{loop.index}}">{{ item.information }} </div>
+        Allergens:<span id="allergens_{{loop.index}}"> {{ item.allergy_information }}</div>
+      </div>
+    </div>
   {% endfor %}
 {% endblock %}

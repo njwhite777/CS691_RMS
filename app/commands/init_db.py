@@ -39,7 +39,7 @@ def create_users():
 
     # Add users
     user = find_or_create_user(u'Admin', u'Example', u'admin@example.com', 'Password1', admin_role)
-    user = find_or_create_user(u'Member', u'Example', u'member@example.com', 'Password1')
+    user = find_or_create_user(u'User', u'Example', u'user@example.com', 'Password1')
 
     # Save to DB
     db.session.commit()
@@ -48,11 +48,11 @@ def create_menu_item():
     # Note: Assuming the db.create_all() command has already been called.
     find_or_create_menu("General")
     db.session.commit()
-    find_or_create_menu_item("Risoto De Milano","27",active=True,category="Dinner")
-    find_or_create_menu_item("Shrimp Skampi","22",active=True,category="Dinner")
-    find_or_create_menu_item("Spagetti","22",active=True,category="Lunch")
-    find_or_create_menu_item("Breadsticks","22",active=True,category="Appetizer")
-    find_or_create_menu_item("Eggplant Parmesean","25",active=False,category="Dinner")
+    find_or_create_menu_item("Risoto De Milano","27",active=True,category="Dinner",information="Shrimp, mussle, scallops on rice.")
+    find_or_create_menu_item("Shrimp Skampi","22",active=True,category="Dinner",information="Shrimp, with white sauce on pasta.")
+    find_or_create_menu_item("Spaghetti","22",active=True,category="Lunch",information="Tomatoe sauce with meatballs on spaghetti pasta.")
+    find_or_create_menu_item("Breadsticks","22",active=True,category="Appetizer",information="Breadsticks.")
+    find_or_create_menu_item("Eggplant Parmesean","25",active=False,category="Dinner",information="Eggplant + Parmesean.")
     db.session.commit()
 
 def find_or_create_menu(name):
@@ -66,10 +66,9 @@ def find_or_create_menu_item(name,price,menu_name="General",active=None,category
     menu = Menu.query.filter(Menu.name==menu_name).first()
     menuItem = MenuItem.query.filter(MenuItem.name==name).first()
     if not menuItem:
-        menuItem = MenuItem(name=name,price=price,active=None,category=None,information=None,ingredients=None,allergy_information=None)
+        menuItem = MenuItem(name=name,price=price,active=active,category=category,information=information,ingredients=ingredients,allergy_information=allergy_information)
         db.session.add(menuItem)
         db.session.commit()
-
         menuItems = MenuItems(menu_id=menu.id,item_id=menuItem.id)
         db.session.add(menuItems)
         db.session.commit()
