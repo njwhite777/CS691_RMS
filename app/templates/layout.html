@@ -13,6 +13,8 @@
         <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
+        <link rel="icon" type="image/png" sizes="32x32" href="url_for('static', filename='./favicon-16x16.png')">
+        <link rel="icon" type="image/png" sizes="16x16" href="url_for('static', filename='./favicon-32x32.png')">
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -28,7 +30,7 @@
         {% block body %}
         <!-- Application specific HTML -->
         <div id="header-div" class="clearfix with-margins">
-            <div class="pull-left"><a href="/"><h1 class="no-margins">Flavortownne</h1></a>            <h3 class="no-margins">Welcome to Flavortownne</h3>
+            <div class="pull-left"><a href="/"><img style="margin-left:-30px;" src="{{ url_for('static', filename='resources/flavortownne.png') }}" class="no-margins"></img></a>            <h3 class="no-margins">Welcome to Flavortownne</h3>
 </div>
             <div class="pull-right">
                 {% if current_user.is_authenticated and not current_user.has_roles('admin') and not current_user.has_roles('staff') %}

@@ -38,3 +38,19 @@ must - This designates that a requirement is of high priority.
 will - This designates that a requirement is of high priority.
 should - This designates that a requirement is of medium priority and that it may be set for a future release.
 may - This designates that a requirement is of low priority and may be set for a future release.
+
+
+#### Completed
+#### High Priority
+<s>1. Menu Requirements:</s>
+<s>  1.1 The user facing application will include a list of menu items.</s>
+  <s>1.2 Item Listings:</s>
+    <s>- Menu items on the user side application will list ingredients.</s>
+    <s>- Menu items on the user side application will allergy
+     information.</s>
+2. Title/Branding:
+  2.1 The menu view will display the company name and logo at the top of the application interface.
+3. Roles:
+  3.1 The application will provide roles as defined by the capabilities which should be designated to particular users. This includes an owner/boss role, staff roles, and user roles.
+  3.2 The boss/owner role must be able to edit/add new items to the list of menu items.
+  3.3 Users must be able to look at menu items.
