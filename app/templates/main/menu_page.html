@@ -16,12 +16,18 @@
         <button id="edit_button_{{ loop.index }}" type="button" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="makeEditable({{loop.index}})">
           <i class="material-icons ">edit</i>
         </button>
+        {% if isAdmin %}
+          <button id="delete_button_{{ loop.index }}" type="button" style="visibility:hidden;" class="btn btn-danger d-flex justify-content-center align-content-between pull-right" onclick="deleteItem({{loop.index}})">
+            <i class="material-icons">delete_forever</i>
+          </button>
+        {% endif %}
         <button id="save_button_{{ loop.index }}" type="button" style="visibility:hidden;" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="saveEdits({{loop.index}})">
           <i class="material-icons">save_alt</i>
         </button>
         <button id="discard_button_{{ loop.index }}" type="button" style="visibility:hidden;" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="discardEdits({{loop.index}})">
           <i class="material-icons">clear</i>
         </button>
+
         <span id="id_{{loop.index}}" style="display:none" >{{ item.id }}</span>
         {% endif %}
       </div>
@@ -29,7 +35,7 @@
         <div>Ingredients: <span id="ingredients_{{loop.index}}" >{{ item.ingredients }} </span></div>
         <div>Information: <span id="information_{{loop.index}}" >{{ item.information }} </span></div>
         <div>Allergens:<span id="allergy_information_{{loop.index}}" > {{ item.allergy_information }}</span></div>
-        {% if item.containsRawMeat() %}
+        {% if item and item.containsRawMeat() %}
         <div>**Contains raw meat.</div>
         {% endif %}
       </div>
@@ -39,7 +45,7 @@
   {% if isAdmin %}
   <h3>Add New Item</h3>
   <div class="panel panel-default" id="add_item_panel" >
-
+    
     <div class="panel-heading form-inline" >
       <div style="width:40%;margin-right: 20px;" class="form-group"> Name of Dish:
         <span id="add_name" style="width:100%;" class="form-control" contenteditable="true"></span>

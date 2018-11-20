@@ -5,6 +5,7 @@ function makeEditable(menu_item){
   var menu_item_handle = document.getElementById("panel_item_"+menu_item);
   document.getElementById("save_button_"+menu_item).style.visibility = "visible";
   document.getElementById("discard_button_"+menu_item).style.visibility = "visible";
+  document.getElementById("delete_button_"+menu_item).style.visibility = "visible";
   document.getElementById("edit_button_"+menu_item).style.display = "none";
 
   var items = ["name_"+menu_item,"price_"+menu_item,"information_"+menu_item,"ingredients_"+menu_item,"allergy_information_"+menu_item];
@@ -19,6 +20,7 @@ function makeEditable(menu_item){
 function discardEdits(menu_item){
   document.getElementById("save_button_"+menu_item).style.visibility = "hidden";
   document.getElementById("discard_button_"+menu_item).style.visibility = "hidden";
+  document.getElementById("delete_button_"+menu_item).style.visibility = "hidden";
   document.getElementById("edit_button_"+menu_item).style.display = "block";
 
   var items = ["name_"+menu_item,"price_"+menu_item,"information_"+menu_item,"ingredients_"+menu_item,"allergy_information_"+menu_item];
@@ -52,15 +54,17 @@ function saveEdits(menu_item){
     data[data_item]= document.getElementById(items[i]).innerHTML;
     document.getElementById(items[i]).className = "";
   }
+  console.log(data);
   xhr.send(JSON.stringify(data));
 
   document.getElementById("save_button_"+menu_item).style.visibility = "hidden";
   document.getElementById("discard_button_"+menu_item).style.visibility = "hidden";
+  document.getElementById("delete_button_"+menu_item).style.visibility = "hidden";
   document.getElementById("edit_button_"+menu_item).style.display = "block";
 }
 
 function addNewItem(){
-  var add_items = ["add_name","add_price","add_information","add_allergy_information"];
+  var add_items = ["add_name","add_price","add_information","add_allergy_information","add_ingredients"];
   var data = {};
 
   for(var i =0;i<add_items.length;i++){
@@ -82,8 +86,29 @@ function addNewItem(){
     }else{
       console.log("Something went wrong with post request.")
     }
-    location.reload();
+    // location.reload();
 
+  }
+  console.log(data);
+  xhr.send(JSON.stringify(data));
+
+};
+
+function deleteItem(menu_item){
+  var xhr = new XMLHttpRequest();
+  xhr.open("DELETE","/menuItem", true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  var delete_item_id = document.getElementById("id_"+menu_item).innerHTML;
+  var data = { 'id': delete_item_id };
+
+  xhr.onreadystatechange = function(){
+    console.log(xhr);
+    if( xhr.readyState == 4 && xhr.status==200 ){
+      console.log("SUCCESSFULLY DELETED");
+      document.getElementById('panel_item_'+menu_item).style.display = "None";
+    }else{
+      console.log("Something went wrong with post request.")
+    }
   }
   xhr.send(JSON.stringify(data));
 

@@ -21,7 +21,7 @@
         </label>
     </div>
 {%- endmacro %}
- 
+
 {% macro render_radio_field(field) -%}
     {% for value, label, checked in field.iter_choices() %}
         <div class="radio">

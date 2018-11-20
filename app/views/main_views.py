@@ -42,6 +42,7 @@ def menu_page(id=None,name=None):
 @login_required  # Limits access to authenticated users
 def edit_menu_page(id=None,name=None):
     menuItems = getMenuItems(id,name)
+    print(menuItems)
     isAdmin = current_user.has_roles('admin')
     isStaff = current_user.has_roles('staff')
     return render_template('main/menu_page.html',menuItems=menuItems,editable=True,isAdmin=isAdmin,isStaff=isStaff)
