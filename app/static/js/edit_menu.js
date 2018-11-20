@@ -7,7 +7,7 @@ function makeEditable(menu_item){
   document.getElementById("discard_button_"+menu_item).style.visibility = "visible";
   document.getElementById("edit_button_"+menu_item).style.display = "none";
 
-  var items = ["name_"+menu_item,"price_"+menu_item,"information_"+menu_item,"allergy_information_"+menu_item];
+  var items = ["name_"+menu_item,"price_"+menu_item,"information_"+menu_item,"ingredients_"+menu_item,"allergy_information_"+menu_item];
   for(var i =0;i<items.length;i++){
     original_text[items[i]] = document.getElementById(items[i]).innerHTML;
     var editElement = document.getElementById(items[i]);
@@ -21,7 +21,7 @@ function discardEdits(menu_item){
   document.getElementById("discard_button_"+menu_item).style.visibility = "hidden";
   document.getElementById("edit_button_"+menu_item).style.display = "block";
 
-  var items = ["name_"+menu_item,"price_"+menu_item,"information_"+menu_item,"allergy_information_"+menu_item];
+  var items = ["name_"+menu_item,"price_"+menu_item,"information_"+menu_item,"ingredients_"+menu_item,"allergy_information_"+menu_item];
   for(var i =0;i<items.length;i++){
     var editElement = document.getElementById(items[i]);
     editElement.innerHTML = original_text[items[i]];
@@ -44,7 +44,7 @@ function saveEdits(menu_item){
   };
 
   var data = {};
-  var items = ["id_"+menu_item,"name_"+menu_item,"price_"+menu_item,"information_"+menu_item,"allergy_information_"+menu_item];
+  var items = ["id_"+menu_item,"name_"+menu_item,"price_"+menu_item,"information_"+menu_item,"ingredients_"+menu_item,"allergy_information_"+menu_item];
 
   for(var i =0;i<items.length;i++){
     var data_item = items[i].split("_").slice(0,-1).join("_");

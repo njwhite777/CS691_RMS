@@ -49,11 +49,12 @@ def create_menu_item():
     # Note: Assuming the db.create_all() command has already been called.
     find_or_create_menu("General")
     db.session.commit()
-    find_or_create_menu_item("Risoto De Milano","27",active=True,category="Dinner",information="Shrimp, mussle, scallops on rice.")
-    find_or_create_menu_item("Shrimp Skampi","22",active=True,category="Dinner",information="Shrimp, with white sauce on pasta.")
-    find_or_create_menu_item("Spaghetti","22",active=True,category="Lunch",information="Tomatoe sauce with meatballs on spaghetti pasta.")
-    find_or_create_menu_item("Breadsticks","22",active=True,category="Appetizer",information="Breadsticks.")
-    find_or_create_menu_item("Eggplant Parmesean","25",active=False,category="Dinner",information="Eggplant + Parmesean.")
+    find_or_create_menu_item("Risoto De Milano","27",active=True,category="Dinner",ingredients="Shrimp, mussle, scallops on rice.")
+    find_or_create_menu_item("Shrimp Skampi","22",active=True,category="Dinner",ingredients="Shrimp, with white sauce on pasta.")
+    find_or_create_menu_item("Spaghetti","22",active=True,category="Lunch",ingredients="Tomatoe sauce with meatballs on spaghetti pasta.")
+    find_or_create_menu_item("Breadsticks","22",active=True,category="Appetizer",ingredients="Breadsticks.")
+    find_or_create_menu_item("Eggplant Parmesean","25",active=False,category="Dinner",ingredients="Eggplant + Parmesean.")
+    find_or_create_menu_item("Sushi","25",active=False,category="Appetizer",allergy_information="Seafood.",ingredients="Fish, rice, seaweed.",information="contains raw fish")
     db.session.commit()
 
 def find_or_create_menu(name):

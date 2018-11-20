@@ -32,6 +32,7 @@ class MenuItemResource(Resource):
                 'name': item.name,
                 'price': item.price,
                 'information': item.information,
+                'ingredients': item.ingredients,
                 'allergy_information' : item.allergy_information
             })
         return jsonify(items)

@@ -7,7 +7,7 @@ from app import db
 class MenuItem(db.Model):
     __tablename__ = 'menu_item'
     id = db.Column(db.Integer, primary_key=True)
-    
+
     name = db.Column(db.String(255), nullable=False, server_default='')
     price = db.Column(db.String(255), nullable=False, server_default='')
     active = db.Column(db.Boolean(), nullable=False, server_default='0')
@@ -15,6 +15,10 @@ class MenuItem(db.Model):
     information = db.Column(db.String(255), nullable=False, server_default='')
     ingredients = db.Column(db.String(255), nullable=False, server_default='')
     allergy_information = db.Column(db.String(255), nullable=False, server_default='')
+
+    def containsRawMeat(self):
+        ingredients = self.information.lower()
+        return "raw beef" in ingredients or "raw chicken" in ingredients or "raw fish" in ingredients or "raw pork" in ingredients or "raw egg" in ingredients
 
     def toDict(self):
         return {
