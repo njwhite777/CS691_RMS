@@ -1,6 +1,7 @@
 {% extends "main/main_base.html" %}
 {# main/main_base.html extends layout.html #}
 {% block content %}
+
 <h3>Menu</h3>
   {% for item in menuItems %}
     <script src="{{ url_for('static', filename='js/edit_menu.js') }}"></script>
@@ -45,7 +46,7 @@
   {% if isAdmin %}
   <h3>Add New Item</h3>
   <div class="panel panel-default" id="add_item_panel" >
-    
+
     <div class="panel-heading form-inline" >
       <div style="width:40%;margin-right: 20px;" class="form-group"> Name of Dish:
         <span id="add_name" style="width:100%;" class="form-control" contenteditable="true"></span>

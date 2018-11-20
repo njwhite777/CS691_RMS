@@ -14,6 +14,9 @@ hr { border-color: #cccccc; margin: 0px; }
 
 body {
   margin-bottom: 60px;
+  background: #1e2a2b;
+  color: #ccc;
+  font-family: 'Open Sans', sans-serif;
 }
 
 footer {
@@ -28,4 +31,48 @@ footer {
 html {
   position: relative;
   min-height: 100%;
+  background: #1e2a2b;
+}
+div{
+  color: #015baf;
+}
+
+img#flavortownne_logo{
+  height: 40%;
+  width: 40%;
+  margin: 0 auto;
+}
+
+p.shine
+{
+    font-size: 1.5em;
+    letter-spacing: 2px;
+    margin: 0 auto;
+    width: 700px;
+    font-family: 'Open Sans Condensed', sans-serif;
+}
+
+.shine
+{
+    background: #222 -webkit-gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, #fff)) 0 0 no-repeat;
+    -webkit-background-size: 125px;
+
+    color: #015baf;
+    -webkit-background-clip: text;
+
+    -webkit-animation-name: shine;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes shine
+{
+    0%
+    {
+        background-position: top left;
+    }
+    100%
+    {
+        background-position: top right;
+    }
 }

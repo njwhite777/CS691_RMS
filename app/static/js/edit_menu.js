@@ -49,10 +49,11 @@ function saveEdits(menu_item){
   var items = ["id_"+menu_item,"name_"+menu_item,"price_"+menu_item,"information_"+menu_item,"ingredients_"+menu_item,"allergy_information_"+menu_item];
 
   for(var i =0;i<items.length;i++){
+    var editElement = document.getElementById(items[i]);
     var data_item = items[i].split("_").slice(0,-1).join("_");
-    console.log(data_item)
-    data[data_item]= document.getElementById(items[i]).innerHTML;
-    document.getElementById(items[i]).className = "";
+    data[data_item]= editElement.innerHTML;
+    editElement.contentEditable=false;
+    editElement.className = "";
   }
   console.log(data);
   xhr.send(JSON.stringify(data));
@@ -113,3 +114,52 @@ function deleteItem(menu_item){
   xhr.send(JSON.stringify(data));
 
 };
+
+function cancelEditSlogan(){
+  var sloganElement = document.getElementById("flavortownne_slogan");
+  sloganElement.className = "";
+  sloganElement.contentEditable=false;
+
+  document.getElementById("button_edit_slogan_save").style.visibility = "hidden";
+  document.getElementById("button_edit_slogan_cancel").style.visibility = "hidden";
+  document.getElementById("button_edit_slogan_edit").style.visibility = "visible";
+  document.getElementById("button_edit_slogan_edit").style.display = "inline";
+}
+
+function editSlogan(){
+  var sloganElement = document.getElementById("flavortownne_slogan");
+  sloganElement.className = "form-control";
+  sloganElement.contentEditable=true;
+
+  document.getElementById("button_edit_slogan_save").style.visibility = "visible";
+  document.getElementById("button_edit_slogan_cancel").style.visibility = "visible";
+  document.getElementById("button_edit_slogan_edit").style.visibility = "hidden";
+  document.getElementById("button_edit_slogan_edit").style.display = "none";
+}
+
+function saveSlogan(){
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("DELETE","/menuItem", true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  var delete_item_id = document.getElementById("flavortownne_slogan").innerHTML;
+  var data = { 'id': delete_item_id };
+
+  xhr.onreadystatechange = function(){
+    console.log(xhr);
+    if( xhr.readyState == 4 && xhr.status==200 ){
+      console.log("SUCCESSFULLY DELETED");
+      document.getElementById('panel_item_'+menu_item).style.display = "None";
+    }else{
+      console.log("Something went wrong with post request.")
+    }
+  }
+  xhr.send(JSON.stringify(data));
+}
+
+function shiny(){
+
+}
+function animateSlogan(){
+
+}
