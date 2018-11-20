@@ -17,5 +17,4 @@ def getMenuItems(id=None,name=None):
     menuItems = list()
     for item in itemsInMenu:
         menuItems.append(MenuItem.query.get(item.item_id))
-        
     return menuItems

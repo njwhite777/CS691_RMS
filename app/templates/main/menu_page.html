@@ -1,10 +1,17 @@
 {% extends "main/main_base.html" %}
 {# main/main_base.html extends layout.html #}
 {% block content %}
+<h3>Menu</h3>
   {% for item in menuItems %}
     <script src="{{ url_for('static', filename='js/edit_menu.js') }}"></script>
     <div class="panel panel-default" id="panel_item_{{loop.index}}">
-      <div class="panel-heading"><span id="name_{{loop.index}}">{{ item.name }}</span> - $<span id="price_{{loop.index}}">{{ item.price }}</span>
+      <div class="panel-heading form-inline">
+        <div style="width:40%;margin-right: 20px;" class="form-group">Dish:
+          <span id="name_{{loop.index}}">{{ item.name }}</span>
+        </div>
+        <div  style="width:40%;" class="form-group">Price (USD):
+          <span id="price_{{loop.index}}">{{ item.price }}</span>
+        </div>
         {% if editable %}
         <button id="edit_button_{{ loop.index }}" type="button" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="makeEditable({{loop.index}})">
           <i class="material-icons ">edit</i>
@@ -15,12 +22,36 @@
         <button id="discard_button_{{ loop.index }}" type="button" style="visibility:hidden;" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="discardEdits({{loop.index}})">
           <i class="material-icons">clear</i>
         </button>
+        <span id="id_{{loop.index}}" style="display:none" >{{ item.id }}</span>
         {% endif %}
       </div>
       <div class="panel-body">
-        <div id="information_{{loop.index}}">{{ item.information }} </div>
-        Allergens:<span id="allergens_{{loop.index}}"> {{ item.allergy_information }}</div>
+        <div>Details: <span id="information_{{loop.index}}" >{{ item.information }} </span></div>
+        <div>Allergens:<span id="allergy_information_{{loop.index}}" > {{ item.allergy_information }}</span></div>
       </div>
+
     </div>
   {% endfor %}
+  {% if isAdmin %}
+  <h3>Add New Item</h3>
+  <div class="panel panel-default" id="add_item_panel" >
+
+    <div class="panel-heading form-inline" >
+      <div style="width:40%;margin-right: 20px;" class="form-group"> Name of Dish:
+        <span id="add_name" style="width:100%;" class="form-control" contenteditable="true"></span>
+      </div>
+      <div style="width:40%;" class="form-group"> Price (USD):
+        <span id="add_price" class="form-control" style="width:100%;" contenteditable="true"></span>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div>Ingredients: <span id="add_information" class="form-control" contenteditable="true" > </span></div>
+      <div>Allergens:<span id="add_allergy_information" class="form-control" contenteditable="true" > </span></div>
+      <button id="add_new_item" type="button" style="margin-top:10px;" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="addNewItem()">
+        Add Item
+      </button>
+    </div>
+  </div>
+  {% endif %}
+
 {% endblock %}

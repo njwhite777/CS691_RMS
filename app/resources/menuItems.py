@@ -20,16 +20,6 @@ from flask.json import jsonify
 from app.models.menuItem_models import *
 import json
 
-class MenuResource(Resource):
-
-    @staticmethod
-    def post(name=None):
-        pass
-
-    @staticmethod
-    def put(name=None):
-        pass
-
 class MenuItemResource(Resource):
     """Verbs relative to a menu item"""
 
@@ -48,23 +38,35 @@ class MenuItemResource(Resource):
 
     def post(self):
         """ Create a menu item based on the posted information """
-        print("HERE!!!")
         args = parser.parse_args()
+        print(args)
         if(args.name):
-            print("HERE!!!")
-            menuItem = MenuItem(name=args.name,price=args.price,active=True,category=args.category,information=args.information,ingredients=args.ingredients,allergy_information=args.allergy_information)
-            return json.dumps(menuItem.toDict())
+            mi = MenuItem.query.filter(MenuItem.name==args.name).first()
+            if(not mi):
+                menuItem = MenuItem(name=args.name,price=args.price,active=args.active,category=args.category,information=args.information,ingredients=args.ingredients,allergy_information=args.allergy_information)
+                db.session.add(menuItem)
+                db.session.commit()
+                mis = MenuItems(item_id=menuItem.id,menu_id=1)
+                db.session.add(mis)
+                db.session.commit()
+                return menuItem.toDict()
+            return mi.toDict()
         else:
             print("problem")
-            return json.dumps({})
+            return {}
 
-    @staticmethod
-    def put():
+    def put(self):
         """ Edit a menu item based on the posted information """
-        menuItem = None
         args = parser.parse_args()
         if(args.id):
-            menuItem = MenuItem.query.get(args.id)
-        elif(args.name):
-            menuItem = MenuItem.query.get(args.id)
-        return json.dumps()
+            mi = MenuItem.query.get(args.id)
+            if(not mi):
+                return {}
+            for key,value in args.items():
+                print(key,value)
+                if(value):
+                    setattr(mi,key,value)
+            db.session.add(mi)
+            db.session.commit()
+            return mi.toDict()
+        return {}

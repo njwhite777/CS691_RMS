@@ -10,13 +10,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 from flask_migrate import Migrate, MigrateCommand
 from flask_user import UserManager
-from flask_wtf.csrf import CSRFProtect
+# from flask_wtf.csrf import CSRFProtect
 from flask_restful import Resource, Api
 
 
 
 # Instantiate Flask extensions
-csrf_protect = CSRFProtect()
+# csrf_protect = CSRFProtect()
 db = SQLAlchemy()
 mail = Mail()
 migrate = Migrate()
@@ -30,8 +30,7 @@ def create_app(extra_config_settings={}):
 
     from .resources import setupResources
     api = Api(app)
-    setupResources(api)
-    
+
     # Load common settings
     app.config.from_object('app.settings')
     # Load environment specific settings
@@ -49,7 +48,7 @@ def create_app(extra_config_settings={}):
     mail.init_app(app)
 
     # Setup WTForms CSRFProtect
-    csrf_protect.init_app(app)
+    # csrf_protect.init_app(app)
 
     # Register blueprints
     from .views import register_blueprints
@@ -77,6 +76,9 @@ def create_app(extra_config_settings={}):
     @app.context_processor
     def context_processor():
         return dict(user_manager=user_manager)
+
+    setupResources(api)
+
 
     return app
 

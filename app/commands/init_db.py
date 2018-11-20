@@ -36,10 +36,11 @@ def create_users():
 
     # Adding roles
     admin_role = find_or_create_role('admin', u'Admin')
+    staff_role = find_or_create_role('staff', u'Staff')
 
     # Add users
     user = find_or_create_user(u'Admin', u'Example', u'admin@example.com', 'Password1', admin_role)
-    user = find_or_create_user(u'User', u'Example', u'user@example.com', 'Password1')
+    user = find_or_create_user(u'User', u'Example', u'user@example.com', 'Password1',staff_role)
 
     # Save to DB
     db.session.commit()
