@@ -1,0 +1,52 @@
+{% extends "restaurant/main_base.html" %}
+{# restaurant/main_base.html extends managment_layout.html #}
+{% block content %}
+  <div class="row" style="margin-top: 10px;">
+    <div class="col-sm-4">
+      <h3>Add New:</h3>
+      <div class="panel panel-default" id="add_item_panel" >
+        <div class="panel-heading form-inline" >
+          Fill in the following form to create a new restaurant.
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+
+            <label for="id_inputName">Restaurant Name:</label>
+            <input type="text" class="form-control" id="id_inputName" placeholder="Flavortownne">
+
+            <label for="id_inputTagline">Restaurant Tagline:</label>
+            <input type="text" class="form-control" id="id_inputTagline" placeholder="Welcome to flavortownne!">
+
+            <label for="inputImageURL">Restaurant Image:</label>
+            <input type="text" class="form-control" id="id_inputImageURL" placeholder="resources/generic.png">
+
+            <label for="id_employeesInRestaurant">Choose Employees:</label>
+            <select id="id_employeesInRestaurant" data-style="btn-default" class="selectpicker form-control" multiple data-max-options="2">
+              <option>Mustard</option>
+              <option>Barbecue</option>
+           </select>
+
+            <div style="margin-top: 10px;">
+              <button id="save_restaurant_button"  type="button" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="saveRestaurant()">
+                <i class="material-icons">save_alt</i>
+              </button>
+              <button id="save_restaurant_button"  type="button" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="clearRestaurantFields()">
+                <i class="material-icons">clear</i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <h3> Modify Existing:</h3>
+      <div class="panel panel-default" id="add_item_panel" >
+        <div class="panel-heading form-inline" >
+          Modify Existing Restaurant:
+        </div>
+        <div class="panel-body">
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

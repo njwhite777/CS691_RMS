@@ -13,7 +13,7 @@ class Order(db.Model):
 
     def toDict(self):
         return {
-            'id' : self.id
+            'id' : self.id,
             'total_price': self.total_price,
             'order_status': self.order_status,
             'order_placed': self.order_placed
@@ -23,11 +23,11 @@ class OrderItems(db.Model):
     __tablename__ = 'order_items'
     id          = db.Column(db.Integer, primary_key=True)
     order_id    = db.Column(db.Integer,db.ForeignKey('order.id', ondelete='CASCADE'))
-    menuItems_id = db.Column(db.Integer,db.ForeignKey('menuItems.id', ondelete='CASCADE'))
+    menuItems_id = db.Column(db.Integer,db.ForeignKey('menu_items.id', ondelete='CASCADE'))
 
     def toDict(self):
         return {
-            'id' : self.id
+            'id' : self.id,
             'order_id': self.order_id,
             'menuItems_id': self.menuItems_id
         }
@@ -35,12 +35,12 @@ class OrderItems(db.Model):
 class OrderAssignments(db.Model):
     __tablename__ = 'order_assignments'
     id = db.Column(db.Integer, primary_key=True)
-    user_id    = db.Column(db.Integer,db.ForeignKey('user.id', ondelete='CASCADE'))
+    user_id    = db.Column(db.Integer,db.ForeignKey('employee.id', ondelete='CASCADE'))
     order_id = db.Column(db.Integer,db.ForeignKey('order.id', ondelete='CASCADE'))
 
     def toDict(self):
         return {
-            'id' : self.id
+            'id' : self.id,
             'order_id': self.order_id,
             'user_id': self.user_id
         }

@@ -1,5 +1,5 @@
-{% extends "main/main_base.html" %}
-{# main/main_base.html extends layout.html #}
+{% extends "menu/main_base.html" %}
+{# menu/main_base.html extends menu_layout.html #}
 {% block content %}
 
 <h3>Menu</h3>
@@ -17,7 +17,7 @@
         <button id="edit_button_{{ loop.index }}" type="button" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="makeEditable({{loop.index}})">
           <i class="material-icons ">edit</i>
         </button>
-        {% if isAdmin %}
+        {% if isOwner %}
           <button id="delete_button_{{ loop.index }}" type="button" style="visibility:hidden;" class="btn btn-danger d-flex justify-content-center align-content-between pull-right" onclick="deleteItem({{loop.index}})">
             <i class="material-icons">delete_forever</i>
           </button>
@@ -43,7 +43,7 @@
 
     </div>
   {% endfor %}
-  {% if isAdmin %}
+  {% if isOwner %}
   <h3>Add New Item</h3>
   <div class="panel panel-default" id="add_item_panel" >
 

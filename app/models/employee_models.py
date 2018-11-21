@@ -10,8 +10,8 @@ from app import db
 
 
 # Define the User data model. Make sure to add the flask_user.UserMixin !!
-class User(db.Model, UserMixin):
-    __tablename__ = 'users'
+class Employee(db.Model, UserMixin):
+    __tablename__ = 'employee'
     id = db.Column(db.Integer, primary_key=True)
 
     # User authentication information (required for app)
@@ -27,8 +27,8 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.Unicode(50), nullable=False, server_default=u'')
 
     # Relationships
-    roles = db.relationship('Role', secondary='user_roles',
-                            backref=db.backref('users', lazy='dynamic'))
+    roles = db.relationship('Role', secondary='employee_roles',
+                            backref=db.backref('employee', lazy='dynamic'))
 
 
 # Define the Role data model
@@ -40,10 +40,10 @@ class Role(db.Model):
 
 
 # Define the UserRoles association model
-class UsersRoles(db.Model):
-    __tablename__ = 'user_roles'
+class EmployeeRoles(db.Model):
+    __tablename__ = 'employee_roles'
     id = db.Column(db.Integer(), primary_key=True)
-    user_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete='CASCADE'))
+    user_id = db.Column(db.Integer(), db.ForeignKey('employee.id', ondelete='CASCADE'))
     role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
 
 
@@ -57,7 +57,7 @@ class UsersRoles(db.Model):
 
 
 # Define the User profile form
-class UserProfileForm(FlaskForm):
+class EmployeeProfileForm(FlaskForm):
     first_name = StringField('First name', validators=[
         validators.DataRequired('First name is required')])
     last_name = StringField('Last name', validators=[

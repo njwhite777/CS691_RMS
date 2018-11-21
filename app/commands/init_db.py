@@ -10,8 +10,10 @@ from flask import current_app
 from flask_script import Command
 
 from app import db
-from app.models.user_models import User, Role
+from app.models.employee_models import Employee, Role
 from app.models.menuItem_models import Menu, MenuItem, MenuItems
+from app.models.order_models import Order, OrderItems, OrderAssignments
+from app.models.restaurant_models import Restaurant,RestaurantMenus,RestaurantEmployees
 
 class InitDbCommand(Command):
     """ Initialize the database."""
@@ -24,11 +26,11 @@ def init_db():
     """ Initialize the database."""
     db.drop_all()
     db.create_all()
-    create_users()
+    create_employees()
     create_menu_item()
 
 
-def create_users():
+def create_employees():
     """ Create users """
 
     # Create all tables
@@ -39,14 +41,14 @@ def create_users():
     # Owner
     # Director
     # Waiters
-    director_role   = find_or_create_role('owner', u'Owner')
-    owner_role      = find_or_create_role('director', u'director')
+    owner_role      = find_or_create_role('owner', u'Owner')
+    director_role   = find_or_create_role('director', u'Director')
     waiter_role     = find_or_create_role('waiter', u'Waiter')
 
     # Add users
-    owner = find_or_create_user(u'Owner', u'Example', u'owner', 'pass', owner_role)
-    director = find_or_create_user(u'Director', u'Example', u'director', 'pass',director_role)
-    waiter = find_or_create_user(u'Waiter', u'Example', u'waiter', 'pass',waiter_role)
+    owner = find_or_create_user(u'Owner', u'Example', u'owner@example.com', 'pass', owner_role)
+    director = find_or_create_user(u'Director', u'Example', u'director@example.com', 'pass',director_role)
+    waiter = find_or_create_user(u'Waiter', u'Example', u'waiter@example.com', 'pass',waiter_role)
 
     # Save to DB
     db.session.commit()
@@ -77,12 +79,11 @@ def find_or_create_menu_item(name,price,menu_name="General",active=None,category
         menuItem = MenuItem(name=name,price=price,active=active,category=category,information=information,ingredients=ingredients,allergy_information=allergy_information)
         db.session.add(menuItem)
         db.session.commit()
-        
+
         menuItems = MenuItems(menu_id=menu.id,item_id=menuItem.id)
         db.session.add(menuItems)
         db.session.commit()
     return menuItem
-
 
 def find_or_create_role(name, label):
     """ Find existing role or create new role """
@@ -92,21 +93,20 @@ def find_or_create_role(name, label):
         db.session.add(role)
     return role
 
-
 def find_or_create_user(first_name, last_name, email, password, role=None):
     """ Find existing user or create new user """
-    user = User.query.filter(User.email == email).first()
-    if not user:
-        user = User(email=email,
+    employee = Employee.query.filter(Employee.email == email).first()
+    if not employee:
+        employee = Employee(email=email,
                     first_name=first_name,
                     last_name=last_name,
                     password=current_app.user_manager.password_manager.hash_password(password),
                     active=True,
                     email_confirmed_at=datetime.datetime.utcnow())
         if role:
-            user.roles.append(role)
-        db.session.add(user)
-    return user
+            employee.roles.append(role)
+        db.session.add(employee)
+    return employee
 
 def find_or_create_restaurants(menu_color):
     pass

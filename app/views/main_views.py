@@ -8,7 +8,7 @@ from flask import request, url_for
 from flask_user import current_user, login_required, roles_required
 
 from app import db
-from app.models.user_models import UserProfileForm
+from app.models.employee_models import EmployeeProfileForm
 from app.models.menuItem_models import Menu, MenuItem, MenuItems
 from .view_helpers import *
 
@@ -31,7 +31,7 @@ def users_page():
 @main_blueprint.route('/menu/s/<string:name>')
 def menu_page(id=None,name=None):
     menuItems = getMenuItems(id,name)
-    return render_template('main/menu_page.html', menuItems=menuItems,editable=False)
+    return render_template('menu/menu_page.html', menuItems=menuItems,editable=False)
 
 
 # The User page is accessible to authenticated users (users that have logged in)
@@ -42,19 +42,19 @@ def menu_page(id=None,name=None):
 @login_required  # Limits access to authenticated users
 def edit_menu_page(id=None,name=None):
     menuItems = getMenuItems(id,name)
-    print(menuItems)
-    isAdmin = current_user.has_roles('admin')
-    isStaff = current_user.has_roles('staff')
-    return render_template('main/menu_page.html',menuItems=menuItems,editable=True,isAdmin=isAdmin,isStaff=isStaff)
+    isOwner = current_user.has_roles('owner')
+    isWaiter = current_user.has_roles('waiter')
+    return render_template('menu/menu_page.html',menuItems=menuItems,editable=True,isOwner=isOwner,isWaiter=isWaiter)
 
 @main_blueprint.route('/restaurant')
 @login_required
+@roles_required('owner')  # Limits access to users with the 'owner' role
 def restaurant_manager():
-    return render_template('main/restaurant_page.html')
+    return render_template('restaurant/restaurant_page.html',purpose="Restaurant Mangment",title="Restaurant Managment")
 
-# The Admin page is accessible to users with the 'admin' role
+# The Admin page is accessible to users with the 'owner' role
 @main_blueprint.route('/edit/site')
-@roles_required('admin')  # Limits access to users with the 'admin' role
+@roles_required('owner')  # Limits access to users with the 'owner' role
 def admin_page():
     return render_template('main/admin_page.html')
 
@@ -62,7 +62,7 @@ def admin_page():
 @login_required
 def user_profile_page():
     # Initialize form
-    form = UserProfileForm(request.form, obj=current_user)
+    form = EmployeeProfileForm(request.form, obj=current_user)
 
     # Process valid POST
     if request.method == 'POST' and form.validate():

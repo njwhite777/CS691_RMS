@@ -14,7 +14,7 @@ class Restaurant(db.Model):
 
     def toDict(self):
         return {
-            'id' : self.id
+            'id' : self.id,
             'name': self.name,
             'picture_url': self.picture_url,
             'menu_color': self.menu_color
@@ -26,9 +26,23 @@ class RestaurantMenus(db.Model):
     menu_id = db.Column(db.Integer, db.ForeignKey('menu.id', ondelete='CASCADE'))
     restaurant_id = db.Column(db.Integer,db.ForeignKey('restaurant.id', ondelete='CASCADE'))
 
+    def toDict(self):
+        return {
+            'id' : self.id,
+            'menu_id': self.menu_id,
+            'restaurant_id': self.restaurant_id
+        }
+
 
 class RestaurantEmployees(db.Model):
     __tablename__ = 'restaurant_employee'
     id = db.Column(db.Integer(), primary_key=True)
     restaurant_id = db.Column(db.Integer,db.ForeignKey('restaurant.id', ondelete='CASCADE'))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
+    user_id = db.Column(db.Integer, db.ForeignKey('employee.id', ondelete='CASCADE'))
+
+    def toDict(self):
+        return {
+            'id' : self.id,
+            'user_id': self.user_id,
+            'restaurant_id': self.restaurant_id
+        }
