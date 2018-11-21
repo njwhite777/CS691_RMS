@@ -35,12 +35,18 @@ def create_users():
     db.create_all()
 
     # Adding roles
-    admin_role = find_or_create_role('admin', u'Admin')
-    staff_role = find_or_create_role('staff', u'Staff')
+    # Roles include
+    # Owner
+    # Director
+    # Waiters
+    director_role   = find_or_create_role('owner', u'Owner')
+    owner_role      = find_or_create_role('director', u'director')
+    waiter_role     = find_or_create_role('waiter', u'Waiter')
 
     # Add users
-    user = find_or_create_user(u'Admin', u'Example', u'admin@example.com', 'Password1', admin_role)
-    user = find_or_create_user(u'User', u'Example', u'user@example.com', 'Password1',staff_role)
+    owner = find_or_create_user(u'Owner', u'Example', u'owner', 'pass', owner_role)
+    director = find_or_create_user(u'Director', u'Example', u'director', 'pass',director_role)
+    waiter = find_or_create_user(u'Waiter', u'Example', u'waiter', 'pass',waiter_role)
 
     # Save to DB
     db.session.commit()

@@ -47,6 +47,10 @@ def edit_menu_page(id=None,name=None):
     isStaff = current_user.has_roles('staff')
     return render_template('main/menu_page.html',menuItems=menuItems,editable=True,isAdmin=isAdmin,isStaff=isStaff)
 
+@main_blueprint.route('/restaurant')
+@login_required
+def restaurant_manager():
+    return render_template('main/restaurant_page.html')
 
 # The Admin page is accessible to users with the 'admin' role
 @main_blueprint.route('/edit/site')
