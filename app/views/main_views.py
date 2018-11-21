@@ -35,22 +35,32 @@ def menu_page(id=None,name=None):
 
 
 # The User page is accessible to authenticated users (users that have logged in)
-@main_blueprint.route('/edit/menu')
+@main_blueprint.route('/manage/menu')
+@login_required
+@roles_required('owner')  # Limits access to users with the 'owner' role
+def add_menu_page():
+    menus = getMenus()
+    menuItems = getItems()
+    return render_template('menu/add_menu_page.html',purpose="Menu Mangment",title="Menu Managment",menus=menus,menuItems=menuItems)
+
+@main_blueprint.route('/manage/restaurant')
+@login_required
+@roles_required('owner')  # Limits access to users with the 'owner' role
+def restaurant_manager():
+    restaurants = getRestaurants()
+    employees = getEmployees()
+    menus = getMenus()
+    return render_template('restaurant/restaurant_page.html',purpose="Restaurant Mangment",title="Restaurant Managment",restaurants=restaurants,employees=employees,menus=menus)
+
 @main_blueprint.route('/edit/menu/<int:id>')
-@main_blueprint.route('/edit/menu/s/')
 @main_blueprint.route('/edit/menu/s/<string:name>')
 @login_required  # Limits access to authenticated users
+@roles_required(['owner','waiter'])  # Limits access to users with the 'owner' role
 def edit_menu_page(id=None,name=None):
     menuItems = getMenuItems(id,name)
     isOwner = current_user.has_roles('owner')
     isWaiter = current_user.has_roles('waiter')
-    return render_template('menu/menu_page.html',menuItems=menuItems,editable=True,isOwner=isOwner,isWaiter=isWaiter)
-
-@main_blueprint.route('/restaurant')
-@login_required
-@roles_required('owner')  # Limits access to users with the 'owner' role
-def restaurant_manager():
-    return render_template('restaurant/restaurant_page.html',purpose="Restaurant Mangment",title="Restaurant Managment")
+    return render_template('menu/menu_page.html',title="Edit Menu",menuItems=menuItems,editable=True,isOwner=isOwner,isWaiter=isWaiter)
 
 # The Admin page is accessible to users with the 'owner' role
 @main_blueprint.route('/edit/site')

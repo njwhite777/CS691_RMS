@@ -30,6 +30,14 @@ class Employee(db.Model, UserMixin):
     roles = db.relationship('Role', secondary='employee_roles',
                             backref=db.backref('employee', lazy='dynamic'))
 
+    def toDict(self):
+        return {
+            'id':           self.id,
+            'first_name':   self.first_name,
+            'last_name':    self.last_name,
+            'email':        self.email,
+            'active':       self.active
+        }
 
 # Define the Role data model
 class Role(db.Model):
@@ -43,7 +51,7 @@ class Role(db.Model):
 class EmployeeRoles(db.Model):
     __tablename__ = 'employee_roles'
     id = db.Column(db.Integer(), primary_key=True)
-    user_id = db.Column(db.Integer(), db.ForeignKey('employee.id', ondelete='CASCADE'))
+    employee_id = db.Column(db.Integer(), db.ForeignKey('employee.id', ondelete='CASCADE'))
     role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
 
 

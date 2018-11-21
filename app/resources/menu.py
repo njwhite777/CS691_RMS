@@ -9,38 +9,27 @@ parser = reqparse.RequestParser()
 
 parser.add_argument('id',location=['form'], type=str, help='')
 parser.add_argument('name',location=['form'], type=str, help='')
-parser.add_argument('picture_url',location=['form'], type=str, help='')
-parser.add_argument('tagline',location=['form'], type=str, help='')
-parser.add_argument('employees',location=['form'], type=str,action='append', help='')
+parser.add_argument('menu_items',location=['form'], type=str,action='append', help='')
 
 from flask.json import jsonify
-from app.models.restaurant_models import *
+from app.models.menuItem_models import *
 from app.models.employee_models import *
 import json
 
-class RestaurantResource(Resource):
+class MenuResource(Resource):
     """Verbs relative to a menu item"""
 
     def get(self):
-        args = parser.parse_args()
-        if(not(args.name) and not(args.id)):
-            restaurants = Restaurant.query.filter().all()
-            return [r.toDict() for r in restaurants]
-        else:
-            restaurants = Restaurant.query.filter(Restaurant.name==args.name).all()
-            items = list()
-            for restaurant in restaurants:
-                items.append(restaurant.toDict())
-        return items
+        pass
 
     def post(self):
-        """ Create a menu item based on the posted information """
+        """ Create a menu based on the posted information """
         args = parser.parse_args()
-        print(args)
         if(args.name):
-            restaurant = Restaurant.query.filter(Restaurant.name==args.name).first()
-            if(not restaurant):
-                restaurant = Restaurant(name=args.name,picture_url=args.picture_url,tagline=args.tagline)
+            m = Menu.query.filter(Menu.name==args.name).first()
+            if(not m):
+                m = Menu(name=args.name)
+                
                 db.session.add(restaurant)
                 db.session.commit()
                 # Add users

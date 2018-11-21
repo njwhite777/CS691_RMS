@@ -1,5 +1,10 @@
 {% extends "layout.html" %}
 
+{% block tb %}
+  {% set title="Restaurant Managment" %}
+  {{ title }}
+{% endblock %}
+
 <!-- HEADER -->
 {% block body %}
 {% set title = "Restaurant Managment System" %}
@@ -9,7 +14,7 @@
         {% if current_user.is_authenticated and current_user.has_roles('owner') %}
             User: <a href="{{ url_for('main.user_profile_page') }}">{{ current_user.first_name or current_user.username or current_user.email }}</a>
             &nbsp; | &nbsp;
-            <a href="{{ url_for('main.edit_menu_page') }}">Edit Restaurant Menu</a>
+            <a href="{{ url_for('main.add_menu_page') }}">Edit Menus</a>
             &nbsp; | &nbsp;
             <a href="{{ url_for('main.restaurant_manager') }}">Edit Restaurants</a>
             &nbsp; | &nbsp;
@@ -18,7 +23,6 @@
         {% elif current_user.is_authenticated and current_user.has_roles('waiter') %}
           <a href="{{ url_for('main.user_profile_page') }}">{{ current_user.first_name or current_user.username or current_user.email }}</a>
           &nbsp; | &nbsp;
-          <a href="{{ url_for('main.edit_menu_page') }}">Edit Restaurant Menu</a>
           &nbsp; | &nbsp;
           <a href="{{ url_for('user.logout') }}">Sign out</a>
         {% else %}
@@ -69,10 +73,11 @@
     </div
 </footer>
 
+
 <!-- Bootstrap JS -->
-<script src="{{ url_for('static', filename='bootstrap/js/jquery.min.js') }}"></script>
-<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<!-- <script src="{{ url_for('static', filename='bootstrap/js/jquery.min.js') }}"></script> -->
+<!-- <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script> -->
+
 
 <!-- Optional Google Analytics: change UA-XXXXX-X to be your site's ID.
 <script>

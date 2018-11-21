@@ -10,43 +10,106 @@
         </div>
         <div class="panel-body">
           <div class="form-group">
+            <form id="id_add_restaurant" name="add_restaurant_form" action="javascript:void(0);" >
 
-            <label for="id_inputName">Restaurant Name:</label>
-            <input type="text" class="form-control" id="id_inputName" placeholder="Flavortownne">
+              <label for="id_inputName">Restaurant Name:</label>
+              <input type="text" class="form-control"  id="id_inputName" name="name" placeholder="Flavortownne">
 
-            <label for="id_inputTagline">Restaurant Tagline:</label>
-            <input type="text" class="form-control" id="id_inputTagline" placeholder="Welcome to flavortownne!">
+              <label for="id_inputTagline">Restaurant Tagline:</label>
+              <input type="text" class="form-control" id="id_inputTagline" name="tagline" placeholder="Welcome to flavortownne!">
 
-            <label for="inputImageURL">Restaurant Image:</label>
-            <input type="text" class="form-control" id="id_inputImageURL" placeholder="resources/generic.png">
+              <label for="id_inputImageURL">Restaurant Image:</label>
+              <input type="text" class="form-control" id="id_inputImageURL" name="picture_url" placeholder="resources/generic.png">
 
-            <label for="id_employeesInRestaurant">Choose Employees:</label>
-            <select id="id_employeesInRestaurant" data-style="btn-default" class="selectpicker form-control" multiple data-max-options="2">
-              <option>Mustard</option>
-              <option>Barbecue</option>
-           </select>
+              <label for="id_employeesInRestaurant">Choose Employees For Restaurant:</label>
+              <select id="id_employeesInRestaurant" name="employees" data-style="btn-default" class="selectpicker form-control" multiple>
+                {% for employee in employees %}
+                  <option value="{{ employee.id }}">{{ employee.first_name }} {{ employee.last_name }}</option>
+                {% endfor %}
+             </select>
 
-            <div style="margin-top: 10px;">
-              <button id="save_restaurant_button"  type="button" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="saveRestaurant()">
-                <i class="material-icons">save_alt</i>
-              </button>
-              <button id="save_restaurant_button"  type="button" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="clearRestaurantFields()">
-                <i class="material-icons">clear</i>
-              </button>
-            </div>
+              <label for="id_menuWithRestaurant">Choose Menu for Restaurant:</label>
+              <select id="id_menuWithRestaurant" name="menu" data-style="btn-default" class="selectpicker form-control">
+                {% for menu in menus %}
+                  <option>{{ menu.name }}</option>
+                {% endfor %}
+             </select>
+
+
+              <div style="margin-top: 10px;">
+                <button id="save_restaurant_button" onclick="saveRestaurant('#id_add_restaurant','post','/api/restaurant')" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" >
+                  <i class="material-icons">save_alt</i>
+                </button>
+                <button id="clear_restaurant_button"  type="button" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="clearRestaurantFields('#id_add_restaurant')">
+                  <i class="material-icons">clear</i>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
+
     <div class="col-sm-4">
       <h3> Modify Existing:</h3>
-      <div class="panel panel-default" id="add_item_panel" >
-        <div class="panel-heading form-inline" >
-          Modify Existing Restaurant:
+      {% for restaurant in restaurants %}
+        <div class="panel panel-default" id="modify_item_panel_{{ restaurant.id }}" >
+          <div class="panel-heading form-inline" >
+            Modify Existing Restaurant: {{ restaurant.name }}
+          </div>
+          <div class="panel-body">
+            <form name="modify_existing_restaurant_{{ restaurant.id }}" id="id_change_restaurant_{{ restaurant.id }}" action="javascript:void(0);">
+              <input style="display:None" value="{{restaurant.id}}" > </input>
+
+              <label for="id_inputName_{{ restaurant.id }}">Restaurant Name:</label>
+              <input type="text" name="name" class="form-control" id="id_inputName_{{ restaurant.id }}" value="{{ restaurant.name }}" placeholder="Flavortownne">
+
+              <label for="id_inputTagline_{{ restaurant.id }}">Restaurant Tagline:</label>
+              <input type="text" name="tagline" class="form-control" id="id_inputTagline_{{ restaurant.id }}" value="{{ restaurant.tagline }}" placeholder="Welcome to flavortownne!">
+
+              <label for="inputImageURL_{{ restaurant.id }}">Restaurant Image:</label>
+              <input type="text" name="picture_url" class="form-control" id="id_inputImageURL_{{ restaurant.id }}" value="{{ restaurant.picture_url }}" placeholder="resources/generic.png">
+
+              <label for="id_employeesInRestaurant_{{ restaurant.id }}">Choose Employees For Restaurant:</label>
+              <select id="id_employeesInRestaurant_{{ restaurant.id }}" name="employees" data-style="btn-default" class="selectpicker form-control" multiple>
+                {% set eForR_id = restaurant.getEmployeeIds() %}
+                {% for employee in employees %}
+                  {% if employee.id in eForR_id %}
+                    <option selected value="{{ employee.id }}">{{ employee.first_name }} {{ employee.last_name }} </option>
+                  {% else %}
+                    <option value="{{ employee.id }}">{{ employee.first_name }} {{ employee.last_name }} </option>
+                  {% endif %}
+                {% endfor %}
+             </select>
+
+             <label for="id_menuWithRestaurant_{{restaurant.id}}">Choose Menu for Restaurant:</label>
+              <select id="id_menuWithRestaurant_{{restaurant.id}}" name="menu" data-style="btn-default" class="selectpicker form-control">
+                {% set menuID = restaurant.getMenuID() %}
+                {% for menu in menus %}
+                  {% if not menu.id == menuID %}
+                    <option value="menu.id" >{{ menu.name }}</option>
+                  {% else %}
+                    <option selected value="menu.id" >{{ menu.name }}</option>
+                  {% endif %}
+                {% endfor %}
+             </select>
+
+              <div style="margin-top: 10px;">
+                <button id="save_restaurant_button_{{restaurant.id}}"  type="button" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="saveRestaurant('#id_change_restaurant_{{ restaurant.id }}','put','/api/restaurant')">
+                  <i class="material-icons">save_alt</i>
+                </button>
+                <button id="clear_restaurant_button_{{restaurant.id}}"  type="button" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="clearRestaurantFields('#id_change_restaurant_{{ restaurant.id }}')">
+                  <i class="material-icons">clear</i>
+                </button>
+                <button id="delete_restaurant_button_{{restaurant.id}}" type="button" class="btn btn-danger d-flex justify-content-center align-content-between pull-right" onclick="saveRestaurant('#id_change_restaurant_{{ restaurant.id }}','delete','/api/restaurant','#modify_item_panel_{{ restaurant.id }}')">
+                  <i class="material-icons">delete_forever</i>
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-        <div class="panel-body">
-        </div>
-      </div>
+      {% endfor %}
     </div>
+
   </div>
 {% endblock %}

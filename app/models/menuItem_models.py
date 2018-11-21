@@ -42,3 +42,15 @@ class Menu(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255),nullable=False)
+
+    def getMenuItems(self):
+        mis = MenuItems.query.filter(MenuItems.menu_id==self.id).all()
+        menuItems = list()
+        for m in mis:
+            e = MenuItem.query.filter(MenuItem.id==m.id).first()
+            if(e):
+                menuItems.append(e)
+        return menuItems
+
+    def getMenuItem_ids(self):
+        return [ mi.id for mi in self.getMenuItems() ]
