@@ -33,9 +33,9 @@ class MenuItem(db.Model):
 
 class MenuItems(db.Model):
     __tablename__ = 'menu_items'
-
-    menu_id = db.Column(db.Integer, primary_key=True)
-    item_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    menu_id = db.Column(db.Integer,db.ForeignKey('menu.id', ondelete='CASCADE'))
+    item_id = db.Column(db.Integer,db.ForeignKey('menu_item.id', ondelete='CASCADE'))
 
 class Menu(db.Model):
     __tablename__ = 'menu'

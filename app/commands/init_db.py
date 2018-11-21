@@ -77,6 +77,7 @@ def find_or_create_menu_item(name,price,menu_name="General",active=None,category
         menuItem = MenuItem(name=name,price=price,active=active,category=category,information=information,ingredients=ingredients,allergy_information=allergy_information)
         db.session.add(menuItem)
         db.session.commit()
+        
         menuItems = MenuItems(menu_id=menu.id,item_id=menuItem.id)
         db.session.add(menuItems)
         db.session.commit()
@@ -106,3 +107,6 @@ def find_or_create_user(first_name, last_name, email, password, role=None):
             user.roles.append(role)
         db.session.add(user)
     return user
+
+def find_or_create_restaurants(menu_color):
+    pass

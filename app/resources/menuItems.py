@@ -57,16 +57,10 @@ class MenuItemResource(Resource):
     def delete(self):
         args = parser.parse_args()
         mi=None
-        mis=None
         if(args.id):
             mi = MenuItem.query.get(args.id)
-            mis = MenuItems.query.filter(MenuItems.item_id==args.id,MenuItems.menu_id==1).first()
-
         if(args.name):
             mi = MenuItem.query.filter(MenuItem.name==args.name).first()
-            mis = MenuItems.query.filter(MenuItems.item_id==mi.id,MenuItems.menu_id==1).first()
-        if(mi):
-            db.session.delete(mis)
             db.session.delete(mi)
             db.session.commit()
         return {}

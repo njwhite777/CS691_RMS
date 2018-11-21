@@ -6,21 +6,41 @@ from app import db
 
 class Order(db.Model):
     __tablename__ = 'order'
-
     id          = db.Column(db.Integer, primary_key=True)
     total_price = db.Column(db.Float, nullable=False, server_default='')
-    picture_url = db.Column(db.String(255), nullable=False, server_default='')
+    order_status= db.Column(db.Integer)
+    order_placed= db.Column(db.DateTime)
 
     def toDict(self):
         return {
             'id' : self.id
-            'name': self.name,
-            'picture_url': self.picture_url,
-            'menu_color': self.menu_color
+            'total_price': self.total_price,
+            'order_status': self.order_status,
+            'order_placed': self.order_placed
         }
 
-class RestaurantMenus(db.Model):
-    __tablename__ = 'restaurant_menus'
-    id = db.Column(db.Integer(), primary_key=True)
-    menu_id = db.Column(db.Integer, db.ForeignKey('menu.id', ondelete='CASCADE'))
-    restaurant_id = db.Column(db.Integer,db.ForeignKey('restaurant.id', ondelete='CASCADE'))
+class OrderItems(db.Model):
+    __tablename__ = 'order_items'
+    id          = db.Column(db.Integer, primary_key=True)
+    order_id    = db.Column(db.Integer,db.ForeignKey('order.id', ondelete='CASCADE'))
+    menuItems_id = db.Column(db.Integer,db.ForeignKey('menuItems.id', ondelete='CASCADE'))
+
+    def toDict(self):
+        return {
+            'id' : self.id
+            'order_id': self.order_id,
+            'menuItems_id': self.menuItems_id
+        }
+
+class OrderAssignments(db.Model):
+    __tablename__ = 'order_assignments'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id    = db.Column(db.Integer,db.ForeignKey('user.id', ondelete='CASCADE'))
+    order_id = db.Column(db.Integer,db.ForeignKey('order.id', ondelete='CASCADE'))
+
+    def toDict(self):
+        return {
+            'id' : self.id
+            'order_id': self.order_id,
+            'user_id': self.user_id
+        }
