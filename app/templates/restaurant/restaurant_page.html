@@ -59,7 +59,7 @@
           </div>
           <div class="panel-body">
             <form name="modify_existing_restaurant_{{ restaurant.id }}" id="id_change_restaurant_{{ restaurant.id }}" action="javascript:void(0);">
-              <input style="display:None" value="{{restaurant.id}}" > </input>
+              <input style="display:None" name="id" value="{{restaurant.id}}" > </input>
 
               <label for="id_inputName_{{ restaurant.id }}">Restaurant Name:</label>
               <input type="text" name="name" class="form-control" id="id_inputName_{{ restaurant.id }}" value="{{ restaurant.name }}" placeholder="Flavortownne">
@@ -86,10 +86,10 @@
               <select id="id_menuWithRestaurant_{{restaurant.id}}" name="menu" data-style="btn-default" class="selectpicker form-control">
                 {% set menuID = restaurant.getMenuID() %}
                 {% for menu in menus %}
-                  {% if not menu.id == menuID %}
-                    <option value="menu.id" >{{ menu.name }}</option>
+                  {% if menu.id == menuID %}
+                    <option selected value="{{ menu.id }}" >{{ menu.name }}</option>
                   {% else %}
-                    <option selected value="menu.id" >{{ menu.name }}</option>
+                    <option  value="{{ menu.id }}" >{{ menu.name }}</option>
                   {% endif %}
                 {% endfor %}
              </select>

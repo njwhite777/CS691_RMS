@@ -13,7 +13,7 @@
           <label for="id_menu_name">Menu Name:</label>
           <input type="text" name="name" class="form-control" id="id_menu_name" placeholder="Name Here">
           <label for="id_choose_menu_items">Choose Menu Items:</label>
-          <select id="id_choose_menu_items" name="employees" data-style="btn-default" class="selectpicker form-control" multiple>
+          <select id="id_choose_menu_items" name="menu_items" data-style="btn-default" class="selectpicker form-control" multiple>
             {# {% set eForR_id = restaurant.getEmployeeIds() %} #}
             {% for item in menuItems %}
                 <option value="{{ item.id }}">{{ item.name }} </option>
@@ -35,13 +35,40 @@
   <div class="col-sm-4">
     <h3>Edit Existing Menus:</h3>
     {% for menu in menus %}
-    <div class="panel panel-default" id="add_item_panel" >
+    <div class="panel panel-default" id="id_menu_panel_{{menu.id}}" >
       <div class="panel-heading form-inline" >
 
       </div>
       <div class="panel-body">
-        Name: <input type="text" value="{{ menu.name }}" name="name" class="form-control" id="id_menu_name" placeholder="Name Here">
+        <form name="id_menu_{{menu.id}}" id="id_menu_{{menu.id}}" action="javascript:void(0);">
 
+          <label for="id_menu_name_{{menu.id}}">Menu Name:</label>
+          <input type="text" value="{{ menu.name }}" name="name" class="form-control" id="id_menu_name" placeholder="Name Here"/>
+          <input style="display:none" name="id" value="{{menu.id}}"/>
+
+          <label for="id_choose_menu_items_{{menu.id}}">Choose Menu Items:</label>
+          <select id="id_choose_menu_items_{{menu.id}}" name="menu_items" data-style="btn-default" class="selectpicker form-control" multiple>
+            {% set menuItemIDs = menu.getMenuItemIDs() %}
+            {% for item in menuItems %}
+              {% if item.id in menuItemIDs  %}
+                <option selected value="{{ item.id }}">{{ item.name }} </option>
+              {% else %}
+                  <option value="{{ item.id }}">{{ item.name }} </option>
+              {% endif %}
+            {% endfor %}
+          </select>
+          <div style="margin-top:10px;">
+            <button id="id_save_menu_{{menu.id}}"  type="button" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="save('#id_menu_{{menu.id}}','put','/api/menu')">
+              <i class="material-icons">save_alt</i>
+            </button>
+            <button id="id_clear_menu_{{menu.id}}"  type="button" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="clearFields('#id_menu_{{menu.id}}')">
+              <i class="material-icons">clear</i>
+            </button>
+            <button id="id_delete_menu_{{menu.id}}" type="button" class="btn btn-danger d-flex justify-content-center align-content-between pull-right" onclick="save('#id_menu_{{menu.id}}','delete','/api/menu','#id_menu_panel_{{menu.id}}')">
+              <i class="material-icons">delete_forever</i>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
     {% endfor %}

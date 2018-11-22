@@ -1,7 +1,7 @@
 function saveRestaurant(id,type,url,del_id){
 
+  console.log($(id).serialize());
   var onSuccess = function(){
-    console.log(id);
     switch(type){
       case "put":
         console.log("Updated fields for " + id);
@@ -15,8 +15,6 @@ function saveRestaurant(id,type,url,del_id){
         break;
     }
   };
-
-  console.log($(id).serialize());
 
   var onFailure = function(){
     console.log("SOMETHING WENT WRONG.");

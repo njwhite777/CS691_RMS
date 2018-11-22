@@ -29,40 +29,52 @@ class MenuResource(Resource):
             m = Menu.query.filter(Menu.name==args.name).first()
             if(not m):
                 m = Menu(name=args.name)
-                
-                db.session.add(restaurant)
+                db.session.add(m)
                 db.session.commit()
-                # Add users
-                for employee in args.employees:
-                    e = Employee.query.get(employee)
-                    if(not(e)):
-                        break
-                    re = RestaurantEmployees(employee_id=e.id,restaurant_id=restaurant.id)
-                    db.session.add(re)
+                for item_id in args.menu_items:
+                    mi = MenuItems(menu_id=m.id,item_id=item_id)
+                    db.session.add(mi)
                 db.session.commit()
-                return restaurant.toDict()
-            return restaurant.toDict()
+                return m.toDict()
+            return m.toDict()
         else:
             return {}
 
     def delete(self):
         args = parser.parse_args()
-        print(args)
         if(not(args.name) and not(args.id)):
+            print("DELETING")
             return {}
         elif(args.id):
-            print("DELETING")
-            r = Restaurant.query.get(args.id)
-            db.session.delete(r)
+            m = Menu.query.get(args.id)
+            db.session.delete(m)
             db.session.commit()
-            return r.toDict()
+            return m.toDict()
         else:
-            print("DELETING")
-            r = Restaurant.query.filter(Restaurant.name==args.name).first()
-            db.session.delete(r)
+            m = Menu.query.filter(Menu.name==args.name).first()
+            db.session.delete(m)
             db.session.commit()
-            return r.toDict()
+            return m.toDict()
         return {}
 
     def put(self):
+        args = parser.parse_args()
+        print(args)
+        if(args.id):
+            m = Menu.query.get(args.id)
+            mis = MenuItems.query.filter(MenuItems.menu_id==m.id).all()
+            for key,val in args.items():
+                if(hasattr(m,key)):
+                    setattr(m,key,val)
+            for mi in mis:
+                db.session.delete(mi)
+            for i in args.menu_items:
+                mi = MenuItems(menu_id=m.id,item_id=i)
+                db.session.add(mi)
+
+
+                #     db.session.delete(mi)
+            db.session.commit()
+            return m.toDict()
+
         return {}

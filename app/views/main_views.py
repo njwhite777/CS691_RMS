@@ -34,6 +34,14 @@ def menu_page(id=None,name=None):
     return render_template('menu/menu_page.html', menuItems=menuItems,editable=False)
 
 
+@main_blueprint.route('/manage/employee/reports')
+@login_required
+@roles_required('owner')  # Limits access to users with the 'owner' role
+def add_menu_page():
+    menus = getMenus()
+    menuItems = getItems()
+    return render_template('menu/add_menu_page.html',purpose="Menu Mangment",title="Menu Managment",menus=menus,menuItems=menuItems)
+
 # The User page is accessible to authenticated users (users that have logged in)
 @main_blueprint.route('/manage/menu')
 @login_required
@@ -42,6 +50,13 @@ def add_menu_page():
     menus = getMenus()
     menuItems = getItems()
     return render_template('menu/add_menu_page.html',purpose="Menu Mangment",title="Menu Managment",menus=menus,menuItems=menuItems)
+
+@main_blueprint.route('/manage/menuitems')
+@login_required
+def menu_item_manager():
+    menuItems = getItems()
+    isOwner = current_user.has_roles('owner')
+    return render_template('menuitem/menu_page.html',purpose="Menu Item Managment",title="Item Managment",menuItems=menuItems,editable=True,isOwner=isOwner)
 
 @main_blueprint.route('/manage/restaurant')
 @login_required

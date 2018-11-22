@@ -18,6 +18,8 @@
             &nbsp; | &nbsp;
             <a href="{{ url_for('main.restaurant_manager') }}">Edit Restaurants</a>
             &nbsp; | &nbsp;
+            <a href="{{ url_for('main.menu_item_manager') }}">Edit Menu Items</a>
+            &nbsp; | &nbsp;
             <a href="{{ url_for('user.logout') }}">Sign out</a>
 
         {% elif current_user.is_authenticated and current_user.has_roles('waiter') %}

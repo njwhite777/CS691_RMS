@@ -74,6 +74,7 @@ def create_employees():
     find_or_create_restaurant_employees(r1.id,director.id)
     find_or_create_restaurant_employees(r2.id,director.id)
     find_or_create_restaurant_employees(r1.id,waiter1.id)
+
     find_or_create_restaurant_menu(restaurant_id=r1.id,menu_id=m.id)
     find_or_create_restaurant_menu(restaurant_id=r2.id,menu_id=m1.id)
     # Save to DB

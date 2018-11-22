@@ -26,12 +26,13 @@ class Restaurant(db.Model):
         return [ e.id for e in self.getEmployees() ]
 
     def getMenu(self):
-        return RestaurantMenus.query.filter(RestaurantMenus.menu_id==self.id).first()
+        return RestaurantMenus.query.filter(RestaurantMenus.restaurant_id==self.id).first()
 
     def getMenuID(self):
         m =  self.getMenu()
         if(m):
-            return m.id
+            print("RID is ",self.id,"MENU ID: ",m.menu_id)
+            return m.menu_id
         return 0
 
     def toDict(self):
