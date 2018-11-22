@@ -37,6 +37,18 @@ div{
   color: #015baf;
 }
 
+a{
+  text-decoration: none !important;
+}
+
+a div {
+  border: 0;
+  text-decoration: none !important;
+}
+a div:hover {
+  text-decoration: none !important;
+}
+
 img#flavortownne_logo{
   height: 40%;
   width: 40%;
@@ -75,4 +87,19 @@ p.shine
     {
         background-position: top right;
     }
+}
+
+.chevron-down-custom span, .chevron-up-custom span {
+  width: 10px;
+  height: 5px;
+  display: inline-block;
+  transition: all .1s linear;
+
+}
+.chevron-down-custom .sp-1, .chevron-up-custom .sp-2 {
+  transform: skewY(-40deg);
+}
+
+.chevron-up-custom .sp-1, .chevron-down-custom .sp-2 {
+  transform: skewY(40deg);
 }

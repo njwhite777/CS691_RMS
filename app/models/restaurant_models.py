@@ -4,6 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, validators
 from app import db
 from app.models.employee_models import Employee
+from app.models.menuItem_models import *
 
 class Restaurant(db.Model):
     __tablename__ = 'restaurant'
@@ -25,15 +26,22 @@ class Restaurant(db.Model):
     def getEmployeeIds(self):
         return [ e.id for e in self.getEmployees() ]
 
-    def getMenu(self):
+    def getRestaurantMenu(self):
         return RestaurantMenus.query.filter(RestaurantMenus.restaurant_id==self.id).first()
 
     def getMenuID(self):
-        m =  self.getMenu()
+        m = self.getRestaurantMenu()
         if(m):
-            print("RID is ",self.id,"MENU ID: ",m.menu_id)
             return m.menu_id
-        return 0
+        return None
+
+    def getMenu(self):
+        rm = self.getRestaurantMenu()
+        m = Menu.query.get(rm.menu_id)
+        if(m):
+            return m
+        return None
+
 
     def toDict(self):
         res = RestaurantEmployees.query.filter(RestaurantEmployees.restaurant_id==self.id).all()

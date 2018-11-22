@@ -25,22 +25,23 @@ def users_page():
     return render_template('main/_users.html')
 
 # The User page is accessible to authenticated users (users that have logged in)
-@main_blueprint.route('/menu')
-@main_blueprint.route('/menu/<int:id>' )
-@main_blueprint.route('/menu/s/')
-@main_blueprint.route('/menu/s/<string:name>')
-def menu_page(id=None,name=None):
-    menuItems = getMenuItems(id,name)
-    return render_template('menu/menu_page.html', menuItems=menuItems,editable=False)
+@main_blueprint.route('/<string:name>/menu')
+def restaurant_menu_page(name=None):
+    r = getRestaurantByName(name)
+    v = getCategorizedMenuItems(r.getMenu().id)
+    return render_template('restaurant/menu.html',restaurant=r,title="Menu for " + name,categorizedItems=v)
 
-
-@main_blueprint.route('/manage/employee/reports')
+@main_blueprint.route('/manage/employee/report')
 @login_required
 @roles_required('owner')  # Limits access to users with the 'owner' role
-def add_menu_page():
-    menus = getMenus()
-    menuItems = getItems()
-    return render_template('menu/add_menu_page.html',purpose="Menu Mangment",title="Menu Managment",menus=menus,menuItems=menuItems)
+def get_employee_report():
+    return render_template('main/employee_report.html',purpose="Report on Employees",title="Menu Managment")
+
+@main_blueprint.route('/manage/order/report')
+@login_required
+@roles_required('owner')  # Limits access to users with the 'owner' role
+def get_order_report():
+    return render_template('main/order_report.html',purpose="Report on Restaurant Orders",title="Report on Orders")
 
 # The User page is accessible to authenticated users (users that have logged in)
 @main_blueprint.route('/manage/menu')
