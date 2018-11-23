@@ -34,6 +34,13 @@ function save(id,type,url,del_id){
   });
 }
 
+(function(){
+  $("#cart").on("click", function() {
+    $(".shopping-cart").fadeToggle( "fast");
+  });
+
+})();
+
 
 function setupCheckedEmployees(){
   console.log("HERE!!!");

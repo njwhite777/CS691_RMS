@@ -93,6 +93,10 @@
                   {% endif %}
                 {% endfor %}
              </select>
+             <label>Visit Page:</label>
+             <div>
+               <a href="/{{ restaurant.name }}/menu" > {{ restaurant.name }}</a>
+             </div>
 
               <div style="margin-top: 10px;">
                 <button id="save_restaurant_button_{{restaurant.id}}"  type="button" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="saveRestaurant('#id_change_restaurant_{{ restaurant.id }}','put','/api/restaurant')">

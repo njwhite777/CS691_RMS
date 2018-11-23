@@ -53,6 +53,7 @@ def getCategorizedMenuItems(menu_id):
             'item_information': row['menu_item_information'],
             'item_allergy_information': row['menu_item_allergy_information'],
             'item_ingredients': row['menu_item_ingredients'],
+            'item_id' : row['menu_items_item_id'],
             'menu_item_id': row['menu_item_id'],
             'category_name': row['category_name']
         }

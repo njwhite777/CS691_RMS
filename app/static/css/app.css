@@ -103,3 +103,6 @@ p.shine
 .chevron-up-custom .sp-1, .chevron-down-custom .sp-2 {
   transform: skewY(40deg);
 }
+
+.container {
+}

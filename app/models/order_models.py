@@ -4,12 +4,17 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, validators
 from app import db
 
+from sqlalchemy.orm import relationship
+
 class Order(db.Model):
     __tablename__ = 'order'
     id          = db.Column(db.Integer, primary_key=True)
     total_price = db.Column(db.Float, nullable=False, server_default='')
     order_status= db.Column(db.Integer)
     order_placed= db.Column(db.DateTime)
+
+    restaurant_id = db.Column(db.Integer,db.ForeignKey('restaurant.id', ondelete='CASCADE'))
+    items = relationship('OrderItems',backref="order")
 
     def toDict(self):
         return {
@@ -22,8 +27,9 @@ class Order(db.Model):
 class OrderItems(db.Model):
     __tablename__ = 'order_items'
     id          = db.Column(db.Integer, primary_key=True)
+
     order_id    = db.Column(db.Integer,db.ForeignKey('order.id', ondelete='CASCADE'))
-    menuItems_id = db.Column(db.Integer,db.ForeignKey('menu_items.id', ondelete='CASCADE'))
+    menuItem_id = db.Column(db.Integer,db.ForeignKey('menu_item.id', ondelete='CASCADE'))
 
     def toDict(self):
         return {

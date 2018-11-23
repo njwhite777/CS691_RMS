@@ -29,7 +29,8 @@ def users_page():
 def restaurant_menu_page(name=None):
     r = getRestaurantByName(name)
     v = getCategorizedMenuItems(r.getMenu().id)
-    return render_template('restaurant/menu.html',restaurant=r,title="Menu for " + name,categorizedItems=v)
+    categories = [ i['category_name'] for i in v ]
+    return render_template('restaurant/menu.html',restaurant=r,title="Menu for " + name,categorizedItems=v,categories=categories)
 
 @main_blueprint.route('/manage/employee/report')
 @login_required
