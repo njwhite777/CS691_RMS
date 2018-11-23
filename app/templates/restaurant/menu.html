@@ -38,7 +38,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Order</button>
+        <button type="button" class="btn btn-primary" onclick="submitOrder('/api/orders')">Order</button>
         <button type="button" class="btn btn-primary" onclick="clearCart()" >Cancel</button>
       </div>
     </div>
@@ -87,45 +87,68 @@
                       </button>
                       <script>
                         var cartItemCount = 0;
-                        var cartObject = {};
+                        var cartObject = {
+                          'restaurant' : {{ restaurant.id }},
+                          'items' : {}
+                        };
 
                         var addToOrder = function(item_price,item_id,item_name,restaurant_id){
-                          console.log(restaurant_id);
                           if(! ('_total_count' in cartObject)) cartObject['_total_count'] = 0;
-                          if(! ('_total' in cartObject)) cartObject['_total'] = 0;
+                          if(! ('total_price' in cartObject)) cartObject['total_price'] = 0;
 
-                          if(item_id in cartObject){
+                          if(item_id in cartObject.items){
 
-                            cartObject[item_id].count += 1;
-                            cartObject['_total'] += item_price;
+                            cartObject.items[item_id].count += 1;
+                            cartObject['total_price'] += item_price;
                             cartObject['_total_count'] += 1
-                            document.getElementById('id_count_' + item_name).innerHTML = cartObject[item_id].count;
+                            document.getElementById('id_count_' + item_name).innerHTML = cartObject.items[item_id].count;
 
                           }else{
 
-                            cartObject[item_id] = {
+                            cartObject.items[item_id] = {
                               count : 1,
                               name : item_name
                             };
                             cartObject['_total_count'] += 1
-                            cartObject['_total'] += item_price;
+                            cartObject['total_price'] += item_price;
                             var tableBody = document.getElementById('id_table_body');
 
                             var row = '<tr><td id="id_name_'+ item_name +'" >'+item_name+' </td><td id="id_count_'+ item_name+'" >'+' 1 ' +'</td></tr>';
                             tableBody.innerHTML += row;
                           }
                           document.getElementById('id_cartItemCount').innerHTML =cartObject._total_count;
-                          document.getElementById('id_cart_grand_total').innerHTML = cartObject._total;
+                          document.getElementById('id_cart_grand_total').innerHTML = cartObject.total_price;
                         };
 
                         var clearCart = function(){
-                          cartObject = {};
+                          cartObject = {
+                            'restaurant' : {{ restaurant.id }},
+                            'items' : {}
+                          };
                           var tableBody = document.getElementById('id_table_body').innerHTML = "";
                           document.getElementById('id_cart_grand_total').innerHTML = 0;
                           document.getElementById('id_cartItemCount').innerHTML = 0;
                         };
 
-                        var submitOrder = function(){
+                        var submitOrder = function(url){
+                          var data = cartObject;
+                          console.log(data );
+
+                          $.ajax({
+                              type: "POST",
+                              url: url,
+                              // The key needs to match your method's input parameter (case-sensitive).
+                              data: JSON.stringify(data),
+                              contentType: "application/json; charset=utf-8",
+                              dataType: "json",
+                              success: function(data){
+                                clearCart();
+                              },
+                              failure: function(errMsg) {
+                                console.log("FAILURE");
+                                alert(errMsg);
+                              }
+                          });
 
                         };
                       </script>

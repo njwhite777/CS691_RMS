@@ -221,7 +221,6 @@ def add_menu_category(m=None,c=None,menu_name=None,category_name=None):
     else:
         mc = MenuCategories.query.filter(and_(*[MenuCategories.category_id==c.id,MenuCategories.menu_id==m.id])).first()
         if(not mc):
-            print("ADDIN MENU CATEGORY ",m.id,c.id)
             mc = MenuCategories(menu_id=m.id,category_id=c.id)
             db.session.add(mc)
             db.session.commit()
