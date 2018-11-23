@@ -1,0 +1,24 @@
+{% extends "restaurant/main_base.html" %}
+{# restaurant/main_base.html extends managment_layout.html #}
+{% block tb %}
+  {{title}}
+{% endblock %}
+
+{% block content %}
+{% for report in reports %}
+  <h3 class="lighter-text" >{{report['when']}} {{ report['start_date'] }} - {{ report['stop_date'] }} </h3>
+  <div> TOTAL ORDERS: {{ report['total_ordered'] }} </div>
+  <div> GROSS VALUE: {{ report['total_value'] }} </div>
+  <h3>Income:</h3>
+  {%  for restaurant in  report['restaurants'] %}
+    <h4> Restaurants: {{ restaurant.Restaurant.name }}  </h3>
+    <div> Gross $ at Location: {{ restaurant.total_value }}  </div>
+  {% endfor %}
+  <h3>Menu Item Statistics:</h3>
+  {%  for restaurant in  report['ric'] %}
+    <h4> Item: {{ restaurant.MenuItem.name }}  </h3>
+    <div> Quantity: {{ restaurant.item_count }}  </div>
+  {% endfor %}
+
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "restaurant/main_base.html" %}
+{# restaurant/main_base.html extends managment_layout.html #}
+{% block tb %}
+  {{title}}
+{% endblock %}
+
+{% block content %}
+  {% for report in reports %}
+    <h3 class="lighter-text" >{{report['when']}} {{ report['start_date'] }} - {{ report['stop_date'] }} </h3>
+
+    <h4 class="lighter-text"> PERSONNEL </h4>
+    <h4>TOTAL EMPLOYEES: {{ report['total_employees'] }}</h4>
+      {% for role in report['roles'] %}
+        <div> {{ role.Role.name }} - {{ role.count }}</div>
+      {% endfor %}
+    <h4 class="lighter-text"> PERSONNEL Service Records: </h4>
+      {%  for employee in report['order_stats'] %}
+      <div style="margin-top: 10px;">
+        <div> Restaurant: {{ employee.Restaurant.name }} </div>
+        <div> Employee: {{ employee.Employee.first_name }} {{ employee.Employee.last_name }} - {{ employee.Employee.id }} </div>
+        <div> TOTAL: {{ employee.service_count }}  </div>
+      </div>
+      {% endfor %}
+
+  {% endfor %}
+{% endblock %}

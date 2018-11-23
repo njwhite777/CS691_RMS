@@ -19,11 +19,18 @@
             &nbsp; | &nbsp;
             <a href="{{ url_for('main.menu_item_manager') }}">Edit Menu Items</a>
             &nbsp; | &nbsp;
+            <a href="{{ url_for('main.order_managment') }}">Manage Orders</a>
+            &nbsp; | &nbsp;
+            <a href="{{ url_for('main.get_employee_report') }}">Employee Reports</a>
+            &nbsp; | &nbsp;
+            <a href="{{ url_for('main.get_order_report') }}">Order Reports</a>
+            &nbsp; | &nbsp;
             <a href="{{ url_for('user.logout') }}">Sign out</a>
 
         {% elif current_user.is_authenticated and current_user.has_roles('waiter') %}
           <a href="{{ url_for('main.user_profile_page') }}">{{ current_user.first_name or current_user.username or current_user.email }}</a>
           &nbsp; | &nbsp;
+          <a href="{{ url_for('main.order_managment') }}">Orders Manager</a>
           &nbsp; | &nbsp;
           <a href="{{ url_for('user.logout') }}">Sign out</a>
         {% else %}

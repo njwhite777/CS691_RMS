@@ -8,6 +8,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, validators
 from app import db
 
+import datetime
 
 # Define the User data model. Make sure to add the flask_user.UserMixin !!
 class Employee(db.Model, UserMixin):
@@ -29,6 +30,7 @@ class Employee(db.Model, UserMixin):
     # Relationships
     roles = db.relationship('Role', secondary='employee_roles',
                             backref=db.backref('employee', lazy='dynamic'))
+    orders = db.relationship('Order',secondary="order_assignments",backref=db.backref('employee', lazy='dynamic'))
 
     def toDict(self):
         return {
@@ -71,3 +73,12 @@ class EmployeeProfileForm(FlaskForm):
     last_name = StringField('Last name', validators=[
         validators.DataRequired('Last name is required')])
     submit = SubmitField('Save')
+
+class EmployeeTimeCard(db.Model):
+    __tablename__ = 'employee_timecard'
+    id = db.Column(db.Integer(), primary_key=True)
+
+    employee_id = db.Column(db.Integer(), db.ForeignKey('employee.id', ondelete='CASCADE'))
+    restaurant_id = db.Column(db.Integer(), db.ForeignKey('restaurant.id', ondelete='CASCADE'))
+    time_in = db.Column(db.DateTime,default=datetime.datetime.utcnow)
+    time_out = db.Column(db.DateTime,default=None)

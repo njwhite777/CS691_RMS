@@ -11,6 +11,9 @@ hr { border-color: #cccccc; margin: 0px; }
 .with-margins { margin: 10px; }
 
 .col-centered { float: none; margin: 0 auto; }
+.lighter-text{
+  color: #98d4fe;
+}
 
 body {
   margin-bottom: 60px;
@@ -87,6 +90,12 @@ p.shine
     {
         background-position: top right;
     }
+}
+
+.green_dot:before{
+  content: ' \25CF';
+  font-size: 30px;
+  color: green;
 }
 
 .chevron-down-custom span, .chevron-up-custom span {

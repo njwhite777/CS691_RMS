@@ -10,14 +10,27 @@ from flask_user import current_user, login_required, roles_required
 from app import db
 from app.models.employee_models import EmployeeProfileForm
 from app.models.menuItem_models import Menu, MenuItem, MenuItems
+from app.models.order_models import Order,OrderItems,OrderAssignments
 from .view_helpers import *
+
+import datetime
 
 main_blueprint = Blueprint('main', __name__, template_folder='templates')
 
 # The Home page is accessible to anyone
 @main_blueprint.route('/')
 def home_page():
-    return redirect('/menu')
+    restaurants = getRestaurants()
+    if(len(restaurants)>0):
+        r = restaurants[0]
+        return redirect("/"+ r.name+"/menu")
+    return redirect('/restaurants')
+
+@main_blueprint.route('/restaurants')
+def restaurant_lading():
+    restaurants = getRestaurants()
+    return render_template('restaurant/restaurants.html',restaurants=restaurants)
+
 
 # The Home page is accessible to anyone
 @main_blueprint.route('/_users')
@@ -36,13 +49,32 @@ def restaurant_menu_page(name=None):
 @login_required
 @roles_required('owner')  # Limits access to users with the 'owner' role
 def get_employee_report():
-    return render_template('main/employee_report.html',purpose="Report on Employees",title="Menu Managment")
+    today = datetime.datetime.utcnow()
+    report = dict()
+    lreport = dict()
+    reports=list()
+    startDate = today - datetime.timedelta(days=today.weekday())
+    endDate = startDate + datetime.timedelta(days=6)
+    lstartDate = startDate - datetime.timedelta(days=7)
+    lendDate = startDate - datetime.timedelta(days=1)
+    
+    reports = reports + [generateEmployeeReportForInterval(startDate,endDate,'This Week: ')] + [generateEmployeeReportForInterval(lstartDate,lendDate,'Last Week: ')]
+    return render_template('main/employee_report.html',purpose="Report on Employees",title="Menu Managment",reports=reports)
 
 @main_blueprint.route('/manage/order/report')
 @login_required
 @roles_required('owner')  # Limits access to users with the 'owner' role
 def get_order_report():
-    return render_template('main/order_report.html',purpose="Report on Restaurant Orders",title="Report on Orders")
+    today = datetime.datetime.utcnow()
+    report = dict()
+    lreport = dict()
+    reports=list()
+    startDate = today - datetime.timedelta(days=today.weekday())
+    endDate = startDate + datetime.timedelta(days=6)
+    lstartDate = startDate - datetime.timedelta(days=7)
+    lendDate = startDate - datetime.timedelta(days=1)
+    reports = reports + [generateOrderReportForInterval(startDate,endDate,'This Week: ')] + [generateOrderReportForInterval(lstartDate,lendDate,'Last Week: ')]
+    return render_template('main/order_report.html',purpose="Report on Restaurant Orders",title="Report on Orders",reports=reports)
 
 # The User page is accessible to authenticated users (users that have logged in)
 @main_blueprint.route('/manage/menu')
@@ -59,6 +91,12 @@ def menu_item_manager():
     menuItems = getItems()
     isOwner = current_user.has_roles('owner')
     return render_template('menuitem/menu_page.html',purpose="Menu Item Managment",title="Item Managment",menuItems=menuItems,editable=True,isOwner=isOwner)
+
+@main_blueprint.route('/manage/orders')
+@login_required
+def order_managment():
+    restaurants_with_orders = getRestaurantOrders()
+    return render_template('restaurant/orders.html',purpose="Order Managment",title="Order Managment",restaurants_with_orders=restaurants_with_orders)
 
 @main_blueprint.route('/manage/restaurant')
 @login_required

@@ -1,0 +1,168 @@
+{% extends "restaurant/main_base.html" %}
+{# restaurant/main_base.html extends managment_layout.html #}
+{% block tb %}
+  {{title}}
+{% endblock %}
+
+{% block content %}
+  <script>
+
+    var saveAssigment = function(url,method,id){
+      console.log($(id).serialize());
+
+      var onSuccess = function(){
+        switch(method){
+          case "put":
+            console.log("Updated fields for " + id);
+            break;
+          case "post":
+
+
+            break;
+          case "delete":
+            $(del_id).css("display","none");
+            break;
+        }
+      };
+
+
+      var onFailure = function(){
+        console.log("SOMETHING WENT WRONG.");
+      };
+
+      $.ajax({
+      url: url,
+      type: method,
+      data: $(id).serialize(),
+      success: onSuccess,
+      error: onFailure
+      });
+    }
+  </script>
+  <div class="row" style="margin-top: 10px;">
+    <div class="col-sm-4">
+    </div>
+    <div class="col-sm-4">
+      {% for restaurant in restaurants_with_orders %}
+        <div style="margin-bottom: 70px;">
+        <h2><span>Restaurant:</span><span style="color:#c9dce3"> {{ restaurant.name }}</span> </h2>
+        {%  if current_user.has_roles('owner') or current_user.has_roles('director')  %}
+        <div style="color:red;">Current Orders: </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Order ID:</th>
+              <th scope="col">Submitted</th>
+              <th scope="col">Items</th>
+              <th scope="col">Assignees</th>
+              <th scope="col">Save Assignee</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in restaurant.getOrderByStatus(order_status=0) %}
+
+            <tr>
+              <th scope="row">{{order.id}}</th>
+              <td>{{order.order_placed.strftime("%Y-%m-%d %H:%M")}}</td>
+              <td>
+                <select id="id_orderedItems" name="orderItems" data-style="btn-default" value="" class="selectpicker form-control" multiple>
+                  {% for menuItem  in order.getMenuItems()  %}
+                    <option disabled selected> {{ menuItem.name }} </option>
+                  {% endfor %}
+               </select>
+              </td>
+              <td>
+                <form name="select_assignee_{{ order.id }}" id="id_select_assignee_{{ order.id }}" action="javascript:void(0);">
+                <input name="order_id" style="display:none" value="{{order.id}}"></input>
+                <select id="employee_id" name="employee_id" data-style="btn-default"  class="selectpicker form-control">
+                  {% for assignee  in restaurant.getAssignees()  %}
+                    <option value="{{ assignee.id }}" > {{ assignee.first_name }} {{ assignee.last_name }} - eid:{{ assignee.id }} </option>
+                  {% endfor %}
+                </select>
+                </form>
+              </td>
+              <td>
+                <button id="id_save_assignee"  type="button" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="saveAssigment('/api/order/assign','post','#id_select_assignee_{{ order.id }}' )">
+                  <i class="material-icons">save_alt</i>
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+
+          </tbody>
+          {% endif %}
+          </table>
+          <div style="margin-top: 40px; color: yellow;" >Orders in Process:</div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Your Order</th>
+                <th scope="col">Order ID:</th>
+                <th scope="col">Submitted</th>
+                <th scope="col">Items</th>
+                <th scope="col">Assignees</th>
+                <th scope="col">Complete</th>
+                <th scope="col">Save</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in restaurant.getOrderByStatus(order_status=1) %}
+              {% set assignedIDs = order.getAssignedIDs() %}
+
+              <tr>
+                <td>
+                  {% if current_user.id in assignedIDs %}
+                  <script>
+                  console.log('{{current_user.id}}','{{assignedIDs}}');
+                  </script>
+                  <span class="green_dot"></span>
+                  {% endif %}
+                </td>
+                <th scope="row">{{order.id}}</th>
+                <td>{{order.order_placed.strftime("%Y-%m-%d %H:%M")}}</td>
+                <td>
+                  <select id="id_orderedItems" name="orderItems" data-style="btn-default" value="" class="selectpicker form-control" multiple>
+                    {% for menuItem  in order.getMenuItems()  %}
+                      <option disabled selected> {{ menuItem.name }} </option>
+                    {% endfor %}
+                 </select>
+                </td>
+                <form name="update_assignee_{{ order.id }}" id="id_update_assignee_{{ order.id }}" action="javascript:void(0);">
+                <td>
+                  <input name="order_id" style="display:none" value="{{order.id}}"></input>
+                  <select id="employee_id" name="employee_id" data-style="btn-default" value="" class="selectpicker form-control">
+                    {% for assignee  in restaurant.getAssignees()  %}
+                      {% if not assignee.id in assignedIDs  %}
+                        <option  value="{{assignee.id}}" > {{ assignee.first_name }} {{ assignee.last_name }} - eid:{{ assignee.id }} </option>
+                      {% else %}
+                        <option  selected value="{{assignee.id}}" > {{ assignee.first_name }} {{ assignee.last_name }} - eid:{{ assignee.id }} </option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                </td>
+                <td>
+                  {% if current_user.id in assignedIDs or  (current_user.has_roles('owner') or current_user.has_roles('director')) %}
+                  <input type="checkbox" id="id_order_complete_{{ order.id }}" name="order_complete" class="form-check-input" >
+                  {% endif %}
+                </td>
+              </form>
+                <td>
+                  {% if current_user.id in assignedIDs or  (current_user.has_roles('owner') or current_user.has_roles('director')) %}
+                  <button id="id_save_assignee"  type="button" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" onclick="saveAssigment('/api/order/assign','put','#id_update_assignee_{{ order.id }}' )">
+                    <i class="material-icons">save_alt</i>
+                  </button>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+
+            </tbody>
+            </table>
+
+          </div>
+      {% endfor %}
+    </div>
+    <div class="col-sm-4">
+    </div>
+  </div>
+{% endblock %}

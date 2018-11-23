@@ -10,3 +10,4 @@ def setupResources(api):
     api.add_resource(RestaurantResource,'/api/restaurant')
     api.add_resource(MenuResource,'/api/menu')
     api.add_resource(OrderResource,'/api/orders')
+    api.add_resource(OrderAssignmentResource,'/api/order/assign')

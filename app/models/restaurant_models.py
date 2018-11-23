@@ -2,9 +2,15 @@
 # from flask_user.forms import RegisterForm
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, validators
+from sqlalchemy.orm import relationship
+from sqlalchemy import and_, or_
+
 from app import db
-from app.models.employee_models import Employee
+from app.models.employee_models import Employee,EmployeeTimeCard
 from app.models.menuItem_models import *
+from app.models.order_models import Order
+
+import datetime
 
 class Restaurant(db.Model):
     __tablename__ = 'restaurant'
@@ -26,6 +32,10 @@ class Restaurant(db.Model):
     def getEmployeeIds(self):
         return [ e.id for e in self.getEmployees() ]
 
+    def getAssignees(self):
+        assignee = EmployeeTimeCard.query.filter(and_(*[EmployeeTimeCard.restaurant_id==self.id,EmployeeTimeCard.time_in<datetime.datetime.utcnow()])).all()
+        return [ Employee.query.filter(Employee.id==a.employee_id).first() for a in assignee ]
+
     def getRestaurantMenu(self):
         return RestaurantMenus.query.filter(RestaurantMenus.restaurant_id==self.id).first()
 
@@ -42,6 +52,8 @@ class Restaurant(db.Model):
             return m
         return None
 
+    def getOrderByStatus(self,order_status=0):
+        return Order.query.filter(and_(*[Order.restaurant_id==self.id,Order.order_status==order_status])).all()
 
     def toDict(self):
         res = RestaurantEmployees.query.filter(RestaurantEmployees.restaurant_id==self.id).all()

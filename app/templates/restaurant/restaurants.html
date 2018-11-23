@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block tb %}
+  {{title}}
+{% endblock %}
+{% block body %}
+You are probably looking for one of the following!
+  {% for restaurant in restaurants %}
+  <div>
+    <a href="/{{ restaurant.name }}/menu">/{{ restaurant.name }}/menu</a>
+  </div>
+  {% endfor %}
+{% endblock %}

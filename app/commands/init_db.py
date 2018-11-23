@@ -10,7 +10,7 @@ from flask import current_app
 from flask_script import Command
 
 from app import db
-from app.models.employee_models import Employee, Role
+from app.models.employee_models import Employee, Role,EmployeeTimeCard
 from app.models.menuItem_models import Menu, MenuItem, MenuItems
 from app.models.order_models import Order, OrderItems, OrderAssignments
 from app.models.category_models import Category,MenuCategories,ItemCategory
@@ -44,14 +44,24 @@ def create_employees():
     # Director
     # Waiters
     owner_role      = find_or_create_role('owner', u'Owner')
+    db.session.commit()
+
     director_role   = find_or_create_role('director', u'Director')
+    db.session.commit()
+
     waiter_role     = find_or_create_role('waiter', u'Waiter')
+    db.session.commit()
+
 
     # Add users
     owner = find_or_create_user(u'Owner', u'Example', u'owner@example.com', 'pass', owner_role)
+    db.session.commit()
     director = find_or_create_user(u'Director', u'Example', u'director@example.com', 'pass',director_role)
+    db.session.commit()
     waiter = find_or_create_user(u'Waiter', u'Example', u'waiter@example.com', 'pass',waiter_role)
+    db.session.commit()
     waiter1 = find_or_create_user(u'Waiter1', u'Example', u'waiter1@example.com', 'pass',waiter_role)
+    db.session.commit()
 
     r1 = find_or_create_restaurants("Flavortownne","picture/is/here.png","Welcome to flavortownne!")
     r2 = find_or_create_restaurants("Flavortownne II","picture/is/hereII.png","Welcome to flavortownne II!")
@@ -71,7 +81,7 @@ def create_employees():
     ic = find_or_create_menu_item("Icecream","25",active=False,allergy_information="Dairy.",ingredients="Milk.",information="")
 
     db.session.commit()
-    find_or_create_restaurant_employees(r1.id,owner.id)
+    e1 = find_or_create_restaurant_employees(r1.id,owner.id)
     find_or_create_restaurant_employees(r2.id,owner.id)
     find_or_create_restaurant_employees(r1.id,waiter.id)
     find_or_create_restaurant_employees(r2.id,waiter.id)
@@ -115,19 +125,27 @@ def create_employees():
 
     add_item_category(c=categories[3],mi=ic)
 
-    # c=Category.query.filter(Category.name=="Breakfast").first()
-    #
-    # c=Category.query.filter(Category.name=="Lunch").first()
-    #
-    # c=Category.query.filter(Category.name=="Dinner").first()
-    #
-    # c=Category.query.filter(Category.name=="Dessert").first()
+
+    print("EMPLOYEE IDS: ",owner.id,waiter.id)
+    print("RESTAURANT IDS: ",r1.id,r2.id)
+    find_or_create_employee_timeCard_entry(employee_id=owner.id,restaurant_id=r1.id)
+    find_or_create_employee_timeCard_entry(employee_id=owner.id,restaurant_id=r2.id)
+
+    find_or_create_employee_timeCard_entry(employee_id=waiter.id,restaurant_id=r2.id)
+    find_or_create_employee_timeCard_entry(employee_id=waiter1.id,restaurant_id=r1.id)
 
 
     # Save to DB
     db.session.commit()
 
 
+def find_or_create_employee_timeCard_entry(employee_id=1,restaurant_id=1):
+    etce = EmployeeTimeCard.query.filter(and_(EmployeeTimeCard.employee_id==employee_id,EmployeeTimeCard.restaurant_id==restaurant_id)).first()
+    if not etce:
+        etce = EmployeeTimeCard(employee_id=employee_id,restaurant_id=restaurant_id)
+        db.session.add(etce)
+    db.session.commit()
+    return etce
 
 def find_or_create_menu(name):
     menu = Menu.query.filter(Menu.name==name).first()
