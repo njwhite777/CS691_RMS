@@ -5,11 +5,10 @@
 
 {% block body %}
 <nav   class="navbar navbar-default navbar-fixed-top">
-  <div class="container" style="margin-bottom:10px;">
     <ul class="navbar-right">
-      <a href="#cartModal" data-toggle="modal" data-target="#cartModal" id="cart"><i style="vertical-align: middle;" class="material-icons">shopping_cart</i><span class="badge" id="id_cartItemCount"> 0 </span></a>
+      <a href="#cartModal" data-toggle="modal" data-target="#cartModal" id="cart"><i style="vertical-align: middle;" class="material-icons">shopping_basket</i><span class="badge" id="id_cartItemCount"> 0 </span></a>
     </ul>
-  </div>
+
 </nav>
 
 <!-- Cart Modal -->
@@ -38,7 +37,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" onclick="submitOrder('/api/orders')">Order</button>
-        <button type="button" class="btn" onclick="clearCart()" >Discard</button>
+        <button type="button" class="btn" data-dismiss="modal" onclick="clearCart()" >Discard</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -49,7 +48,11 @@
   <div class = "page-header" style="margin-top: 70px;">
      <h1>
         <a><img src="{{ url_for('static', filename=restaurant.picture_url)  }}" ></a>
-        <b><div id="id_slogan"  class="shine" >{{ restaurant.tagline|upper }}</div></b>
+        {% if restaurant.tagline_options == 'shiny'%}
+          <b><div id="id_slogan"  class="shine" >{{ restaurant.tagline|upper }}</div></b>
+        {% else %}
+          <b><div id="id_slogan"  class="animated bounce infinite" >{{ restaurant.tagline|upper }}</div></b>
+        {% endif %}
      </h1>
   </div>
 

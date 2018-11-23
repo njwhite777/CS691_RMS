@@ -26,16 +26,14 @@
                 {% for employee in employees %}
                   <option value="{{ employee.id }}">{{ employee.first_name }} {{ employee.last_name }}</option>
                 {% endfor %}
-             </select>
+              </select>
 
-              <label for="id_menuWithRestaurant">Choose Menu for Restaurant:</label>
+                <label for="id_menuWithRestaurant">Choose Menu for Restaurant:</label>
               <select id="id_menuWithRestaurant" name="menu" data-style="btn-default" class="selectpicker form-control">
-                {% for menu in menus %}
-                  <option>{{ menu.name }}</option>
-                {% endfor %}
-             </select>
-
-
+                  {% for menu in menus %}
+                    <option>{{ menu.name }}</option>
+                  {% endfor %}
+              </select>
               <div style="margin-top: 10px;">
                 <button id="save_restaurant_button" onclick="saveRestaurant('#id_add_restaurant','post','/api/restaurant')" class="btn btn-primary d-flex justify-content-center align-content-between pull-right" >
                   <i class="material-icons">save_alt</i>
@@ -64,9 +62,13 @@
               <label for="id_inputName_{{ restaurant.id }}">Restaurant Name:</label>
               <input type="text" name="name" class="form-control" id="id_inputName_{{ restaurant.id }}" value="{{ restaurant.name }}" placeholder="Flavortownne">
 
-              <label for="id_inputTagline_{{ restaurant.id }}">Restaurant Tagline:</label>
-              <input type="text" name="tagline" class="form-control" id="id_inputTagline_{{ restaurant.id }}" value="{{ restaurant.tagline }}" placeholder="Welcome to flavortownne!">
-
+              <div>
+                <label for="id_inputTagline_{{ restaurant.id }}">Restaurant Tagline:</label>
+                <input type="text" name="tagline" class="form-control" id="id_inputTagline_{{ restaurant.id }}" value="{{ restaurant.tagline }}" placeholder="Welcome to flavortownne!">
+                <label>Tagline Options:</label>
+                <label class="radio-inline"><input type="radio" name="tagline_options" value="animate" checked>Animate!</label>
+                <label class="radio-inline"><input type="radio" name="tagline_options" value="shiny">Make it shiny</label>
+              </div>
               <label for="inputImageURL_{{ restaurant.id }}">Restaurant Image:</label>
               <input type="text" name="picture_url" class="form-control" id="id_inputImageURL_{{ restaurant.id }}" value="{{ restaurant.picture_url }}" placeholder="resources/generic.png">
 

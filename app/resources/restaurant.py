@@ -13,6 +13,7 @@ parser.add_argument('picture_url',location=['form'], type=str, help='')
 parser.add_argument('tagline',location=['form'], type=str, help='')
 parser.add_argument('employees',location=['form'], type=str,action='append', help='')
 parser.add_argument('menu',location=['form'], type=str, help='')
+parser.add_argument('tagline_options',location=['form'], type=str, help='')
 
 from flask.json import jsonify
 from app.models.restaurant_models import *
@@ -42,7 +43,7 @@ class RestaurantResource(Resource):
         if(args.name):
             restaurant = Restaurant.query.filter(Restaurant.name==args.name).first()
             if(not restaurant):
-                restaurant = Restaurant(name=args.name,picture_url=args.picture_url,tagline=args.tagline)
+                restaurant = Restaurant(name=args.name,picture_url=args.picture_url,tagline=args.tagline,tagline_options=args.tagline_options)
                 db.session.add(restaurant)
                 db.session.commit()
 
@@ -54,8 +55,7 @@ class RestaurantResource(Resource):
                     re = RestaurantEmployees(employee_id=e.id,restaurant_id=restaurant.id)
                     db.session.add(re)
 
-                # Add menu
-                m = Menu.query.filter(Menu.name==args.menu).first()
+                m  = Menu.query.filter(Menu.name==args.menu).first()
                 rm = RestaurantMenus(menu_id=m.id,restaurant_id=restaurant.id)
 
                 db.session.commit()

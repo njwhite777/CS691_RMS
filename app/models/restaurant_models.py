@@ -3,6 +3,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, validators
 from sqlalchemy.orm import relationship
+
 from sqlalchemy import and_, or_
 
 from app import db
@@ -18,7 +19,8 @@ class Restaurant(db.Model):
     id          = db.Column(db.Integer, primary_key=True)
     name        = db.Column(db.String(255), nullable=False, server_default='')
     picture_url = db.Column(db.String(255), nullable=False, server_default='')
-    tagline  = db.Column(db.String(255), nullable=False, server_default='')
+    tagline     = db.Column(db.String(255), nullable=False, server_default='')
+    tagline_options = db.Column(db.String(255),nullable=False,server_default='')
 
     def getEmployees(self):
         res = RestaurantEmployees.query.filter(RestaurantEmployees.restaurant_id==self.id).all()

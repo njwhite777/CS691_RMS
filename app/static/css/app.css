@@ -20,6 +20,8 @@ body {
   background: #1e2a2b;
   color: #ccc;
   font-family: 'Open Sans', sans-serif;
+  overflow-x: hidden;
+
 }
 
 footer {
@@ -113,5 +115,12 @@ p.shine
   transform: skewY(40deg);
 }
 
-.container {
+nav {
+  position: relative;
+}
+ul.navbar-right {
+    position: absolute;
+    top: 50%;
+    right: 10%;
+    transform: translateY(-50%);
 }

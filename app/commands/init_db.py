@@ -63,15 +63,15 @@ def create_employees():
     waiter1 = find_or_create_user(u'Waiter1', u'Example', u'waiter1@example.com', 'pass',waiter_role)
     db.session.commit()
 
-    r1 = find_or_create_restaurants("Flavortownne","picture/is/here.png","Welcome to flavortownne!")
-    r2 = find_or_create_restaurants("Flavortownne II","picture/is/hereII.png","Welcome to flavortownne II!")
+    r1 = find_or_create_restaurants("Flavortownne","resources/ft_simple.png","Welcome to flavortownne!")
+    r2 = find_or_create_restaurants("Flavortownne II","resources/ft_II_white.png","Welcome to flavortownne II!")
 
     m = find_or_create_menu("General")
     m1 = find_or_create_menu("Gen1")
     db.session.commit()
 
     # Note: Assuming the db.create_all() command has already been called.
-    rdm = find_or_create_menu_item("Risoto De Milano","27",active=True,ingredients="Shrimp, mussle, scallops on rice.")
+    rdm = find_or_create_menu_item("Risotto De Milano","27",active=True,ingredients="Shrimp, mussle, scallops on rice.")
     ss = find_or_create_menu_item("Shrimp Skampi","22",active=True,ingredients="Shrimp, with white sauce on pasta.")
     spag = find_or_create_menu_item("Spaghetti","22",active=True,ingredients="Tomatoe sauce with meatballs on spaghetti pasta.")
     bs = find_or_create_menu_item("Breadsticks","22",active=True,ingredients="Breadsticks.")
