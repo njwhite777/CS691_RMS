@@ -14,6 +14,8 @@ from app.models.order_models import Order,OrderItems,OrderAssignments
 from .view_helpers import *
 
 import datetime
+from datetime import timezone
+import time
 
 main_blueprint = Blueprint('main', __name__, template_folder='templates')
 
@@ -31,7 +33,6 @@ def restaurant_lading():
     restaurants = getRestaurants()
     return render_template('restaurant/restaurants.html',restaurants=restaurants)
 
-
 # The Home page is accessible to anyone
 @main_blueprint.route('/_users')
 def users_page():
@@ -45,6 +46,15 @@ def restaurant_menu_page(name=None):
     categories = [ i['category_name'] for i in v ]
     return render_template('restaurant/menu.html',restaurant=r,title="Menu for " + name,categorizedItems=v,categories=categories)
 
+@main_blueprint.route('/<string:name>/order/<int:order_id>')
+def restaurant_order_status(name=None,order_id=None):
+    if(order_id == None or name == None):
+        return
+    order = getOrderByID(order_id)
+    restaurant = getRestaurantByName(name)
+    ordertime = order.order_placed.replace(tzinfo=timezone.utc).astimezone(tz=None)
+    return render_template('restaurant/order_status.html',title="Order Status ",purpose="Order Status",order=order,restaurant=restaurant,ordertime=ordertime)
+
 @main_blueprint.route('/manage/employee/report')
 @login_required
 @roles_required('owner')  # Limits access to users with the 'owner' role
@@ -57,7 +67,7 @@ def get_employee_report():
     endDate = startDate + datetime.timedelta(days=6)
     lstartDate = startDate - datetime.timedelta(days=7)
     lendDate = startDate - datetime.timedelta(days=1)
-    
+
     reports = reports + [generateEmployeeReportForInterval(startDate,endDate,'This Week: ')] + [generateEmployeeReportForInterval(lstartDate,lendDate,'Last Week: ')]
     return render_template('main/employee_report.html',purpose="Report on Employees",title="Menu Managment",reports=reports)
 
@@ -96,7 +106,7 @@ def menu_item_manager():
 @login_required
 def order_managment():
     restaurants_with_orders = getRestaurantOrders()
-    return render_template('restaurant/orders.html',purpose="Order Managment",title="Order Managment",restaurants_with_orders=restaurants_with_orders)
+    return render_template('restaurant/orders.html',purpose="Order Managment",title="Order Managment",restaurants_with_orders=restaurants_with_orders,timezone=timezone)
 
 @main_blueprint.route('/manage/restaurant')
 @login_required

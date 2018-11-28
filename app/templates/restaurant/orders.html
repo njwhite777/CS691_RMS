@@ -63,7 +63,7 @@
 
             <tr>
               <th scope="row">{{order.id}}</th>
-              <td>{{order.order_placed.strftime("%Y-%m-%d %H:%M")}}</td>
+              <td>{{ order.order_placed.replace(tzinfo=timezone.utc).astimezone(tz=None).strftime("%Y-%m-%d %H:%M") }}</td>
               <td>
                 <select id="id_orderedItems" name="orderItems" data-style="btn-default" value="" class="selectpicker form-control" multiple>
                   {% for menuItem  in order.getMenuItems()  %}

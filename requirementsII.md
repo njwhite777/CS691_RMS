@@ -3,6 +3,8 @@ Original Text: "I want to have a list of menu items with ingredients, allergen i
 
 Iteration II: "I own 3 different restaurants in town. I want to use this software in my other restaurants too. Keep this in mind. I also want my customers to be able to give orders, like they can select a few of the menu items in a cart-like structure and then, they can give orders. Orders should be seen by the director so that he can assign a waiter to that order for preparation. And weekly, I want to see a report of all orders and the workload on the waiters."
 
+Iteration III: "Each order should have some kind of status. Some may be received, others may be in-preparation, final touches, on the way etc. The customer can see this but only director can change the status of an order. I also want customers to add some tip while giving the orders."
+
 #### High Priority
 1. Menu Requirements:
   1.1 The user facing application will include a list of menu items.

@@ -17,17 +17,12 @@ class Order(db.Model):
     total_price = db.Column(db.Float, nullable=False, server_default='')
     order_status= db.Column(db.Integer)
     order_placed= db.Column(db.DateTime,default=datetime.datetime.utcnow)
+    tip         = db.Column(db.Float, nullable=False,server_default='')
 
     restaurant_id = db.Column(db.Integer,db.ForeignKey('restaurant.id', ondelete='CASCADE'))
 
     items = db.relationship('MenuItem',secondary="order_items",backref="order")
     assigned = db.relationship('Employee',secondary="order_assignments",backref=db.backref('order', lazy='dynamic'))
-
-    # def getOrderQuantity(self):
-    #     q = db.session.query(Order,OrderItems,MenuItem,label('item_quantity',func.count(MenuItem.id))).filter(Order.id==self.id).join(OrderItems).join(MenuItem).group_by(MenuItem.id)
-    #     for row in q:
-    #         print(row.item_quantity)
-    #     return
 
     def getAssignedIDs(self):
         return [ a.id for a in self.assigned ]

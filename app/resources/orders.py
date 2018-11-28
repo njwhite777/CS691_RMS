@@ -16,6 +16,7 @@ parser.add_argument('id',location=['json'], type=str, help='')
 parser.add_argument('restaurant',location=['json'], type=str, help='')
 parser.add_argument('total_price',location=['json'], type=str, help='')
 parser.add_argument('items',dest='menu_items',location=['json'], type=str,action='append', help='')
+parser.add_argument('tip',location=['json'], type=str,help='')
 
 oaParser = reqparse.RequestParser()
 oaParser.add_argument('employee_id',location=['form'],action='append', type=str, help='')
@@ -26,7 +27,8 @@ class OrderResource(Resource):
 
     def post(self):
         args = parser.parse_args()
-        o = Order(total_price=args.total_price,order_status=0,restaurant_id=args.restaurant)
+        o = Order(total_price=args.total_price,order_status=0,restaurant_id=args.restaurant,tip=args.tip)
+        r = Restaurant.query.get(args.restaurant)
         db.session.add(o)
         db.session.commit()
         menu_items = args.menu_items[0]
@@ -36,7 +38,10 @@ class OrderResource(Resource):
                 oi = OrderItems(menuItem_id=key,order_id=o.id)
                 db.session.add(oi)
                 db.session.commit()
-        return o.toDict()
+        rdict = o.toDict()
+        if(r):
+            rdict['restaurant_name'] = r.name
+        return rdict
 
 class OrderAssignmentResource(Resource):
 

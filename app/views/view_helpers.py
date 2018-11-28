@@ -50,6 +50,9 @@ def getMenus():
 def getItems():
     return MenuItem.query.filter().all()
 
+def getOrderByID(order_id):
+    return Order.query.get(order_id)
+
 def getRestaurantByName(name):
     return Restaurant.query.filter(Restaurant.name==name).first()
 

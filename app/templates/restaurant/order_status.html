@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block tb %}
+  {{title}}
+{% endblock %}
+
+{% block body %}
+<div class="with-margins" >
+  <div class = "page-header" style="margin-top: 70px;">
+     <h1>
+        <a><img src="{{ url_for('static', filename=restaurant.picture_url)  }}" ></a>
+        {% if restaurant.tagline_options == 'shiny'%}
+          <b><div id="id_slogan"  class="shine" >{{ restaurant.tagline|upper }}</div></b>
+        {% else %}
+          <b><div id="id_slogan"  class="animated bounce infinite" >{{ restaurant.tagline|upper }}</div></b>
+        {% endif %}
+     </h1>
+  </div>
+    <div class="row">
+      <div class="col-md-3">
+      </div>
+      <div class="col-md-6">
+        {%  if order.order_status == 0 %}
+        <h3 style="color:red"> Order Placed! </h3>
+        <div  style="color:#95b3e4"><span style="margin-right: 20px;"> ID: {{ order.id }}</span><span style="margin-right: 20px;">Time: {{ ordertime.strftime("%b %d, %Y") }} at {{ ordertime.strftime("%H:%M") }} </span><span>Total Price: {{ order.total_price }}</span></div>
+        {% elif order.order_status == 1 %}
+        <h3 style="color:yellow"> Order in Process </h3>
+        <div style="color:#95b3e4"><span style="margin-right: 20px;"> ID: {{ order.id }}</span><span style="margin-right: 20px;">Time: {{ ordertime.strftime("%b %d, %Y") }} at {{ ordertime.strftime("%H:%M") }} </span><span>Total Price: {{ order.total_price }}</span></div>
+        {% elif order.order_status == 2 %}
+        <h3 style="color:#5bf75c"> Order ready for delivery: </h3>
+        <div  style="color:#95b3e4"><span style="margin-right: 20px;"> ID: {{ order.id }}</span><span style="margin-right: 20px;">Time: {{ ordertime.strftime("%b %d, %Y") }} at {{ ordertime.strftime("%H:%M") }} </span><span>Total Price: {{ order.total_price }}</span></div>
+        {% elif order.order_status > 2 %}
+        <h3 style="color:#5bf75c"> Order Complete </h3>
+        <div  style="color:#95b3e4"><span style="margin-right: 20px;"> ID: {{ order.id }}</span><span style="margin-right: 20px;">Time: {{ ordertime.strftime("%b %d, %Y") }} at {{ ordertime.strftime("%H:%M") }} </span><span>Total Price: {{ order.total_price }}</span></div>
+        {% endif %}
+      </div>
+      <div class="col-md-3">
+      </div>
+    </div>
+    <script>
+      setTimeout(function() {
+        location.reload();
+      }, 30000);
+    </script>
+{% endblock%}
