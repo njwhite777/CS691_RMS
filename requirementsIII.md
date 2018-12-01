@@ -3,6 +3,7 @@ Original Text: "I want to have a list of menu items with ingredients, allergen i
 
 Iteration II: "I own 3 different restaurants in town. I want to use this software in my other restaurants too. Keep this in mind. I also want my customers to be able to give orders, like they can select a few of the menu items in a cart-like structure and then, they can give orders. Orders should be seen by the director so that he can assign a waiter to that order for preparation. And weekly, I want to see a report of all orders and the workload on the waiters."
 
+Iteration III: "Each order should have some kind of status. Some may be received, others may be in-preparation, final touches, on the way etc. The customer can see this but only director can change the status of an order. I also want customers to add some tip while giving the orders."
 
 #### High Priority
 1. Menu Requirements:
@@ -19,7 +20,10 @@ Iteration II: "I own 3 different restaurants in town. I want to use this softwar
   3.3 Users must be able to look at menu items without any need for a login.
 4. Ordering:
   4.1 Customers will be able to place orders by choosing items from the menu and then adding them to a "cart".
-  4.2 Once a customer has finished selecting their items, they can submit the order to be seen by the director user for assignment.
+  4.2 Also present in the cart should be an option to add a tip to the total.
+  4.3 Once the tip has been added the total should be updated with the new order price.
+  4.4 Once a customer has finished selecting their items, they can submit the order to be seen by the director user for assignment.
+  4.5 As an order is processed by a particular the restaurant, information about it's current status should be reported so the customer can track their order.  
 5. Reporting:
   5.1 Reports will be generated weekly for a weekday time period (M-S).
   5.2 Reports will show detailed information about the activity of employees.
