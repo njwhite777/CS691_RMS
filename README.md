@@ -52,3 +52,6 @@ If you want to drop to a shell in the application context:
 ```
 ./manage.py shell
 ```
+
+### Acknowledgments:
+Thanks to https://github.com/lingthio for the project used as a starting framework: https://github.com/lingthio/Flask-User-starter-app.
