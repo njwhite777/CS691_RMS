@@ -8,13 +8,13 @@ For this project the backend is implemented in Python 3 using the Flask framewor
 
 ## Additional Documentation:
 #### Class Diagrams:
-<a href="class_diagram.png">Iteration I Diagram</a>
-<a href="class_diagramII.png">Iteration II Diagram</a>
+<a href="class_diagram.png">Iteration I Diagram</a>  
+<a href="class_diagramII.png">Iteration II Diagram</a>  
 
 #### Requirements:
-<a href="requirements.md">Iteration I</a>
-<a href="requirementsII.md">Iteration II</a>
-<a href="requirementsIII.md">Iteration II</a>
+<a href="requirements.md">Iteration I</a>  
+<a href="requirementsII.md">Iteration II</a>  
+<a href="requirementsIII.md">Iteration II</a>  
 
 
 ## Replicating the development environment:
