@@ -14,7 +14,7 @@ For this project the backend is implemented in Python 3 using the Flask framewor
 #### Requirements:
 <a href="requirements.md">Iteration I</a>  
 <a href="requirementsII.md">Iteration II</a>  
-<a href="requirementsIII.md">Iteration II</a>  
+<a href="requirementsIII.md">Iteration III</a>  
 
 
 ## Replicating the development environment:
