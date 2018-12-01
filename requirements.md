@@ -40,10 +40,10 @@ may - This designates that a requirement is of low priority and may be set for a
 
 #### Completed
 #### High Priority
-<s>1. Menu Requirements:</s>
-<s>2. Title/Branding:</s>
-<s>3. Roles:</s>
-#### Medium Priority
-<s>1. Menu Requirements:
-2. Title/Branding:
+<s>1. Menu Requirements:</s>  
+<s>2. Title/Branding:</s>  
+<s>3. Roles:</s>  
+#### Medium Priority  
+<s>1. Menu Requirements:  
+2. Title/Branding:  
 #### Low Priority
