@@ -33,11 +33,7 @@
         </table>
       </div>
       <div class="with-margins">
-        TIP:
-        <button type="button" class="btn" onclick="tipCalc(0)" >No Tip</button>
-        <button type="button" class="btn" onclick="tipCalc(10)" >10%</button>
-        <button type="button" class="btn" onclick="tipCalc(15)" >15%</button>
-        <button type="button" class="btn" onclick="tipCalc(20)" >20%</button>
+        TIP: $<input style="width: 4em;" name="tip" id="id_tip_amount" type="number" step="0.01" > </input>
       </div>
       <div class="with-margins">
         GRAND TOTAL: <span id="id_cart_grand_total">0</span>
@@ -51,7 +47,7 @@
   </div>
 </div>
 
-<!-- Cart Modal -->
+<!-- Order Modal -->
 <div class="modal fade" id="followOrderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -61,7 +57,7 @@
       </div>
       <div id="id_modal_body" class="modal-body">
         Order submitted!
-        <div> If you would like to track the status of your order <a id="id_followOrder" href="">follow this link!</a></div>
+        <div> If you would like to track the status of your order <a id="id_followOrder" style="color:red;" href="">follow this link!</a></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -118,18 +114,11 @@
                         var cartItemCount = 0;
                         var cartObject = {
                           'restaurant' : {{ restaurant.id }},
-                          'items' : {}
+                          'items' : {},
+                          'tip': 0
                         };
 
-                        var tipCalc = function(percent){
 
-                          if('total_price' in cartObject){
-                            var total_price = cartObject['total_price'];
-                            cartObject['tip'] = total_price * (percent/100);
-                          }
-                          console.log(cartObject);
-
-                        };
 
                         var addToOrder = function(item_price,item_id,item_name,restaurant_id){
                           if(! ('_total_count' in cartObject)) cartObject['_total_count'] = 0;
@@ -167,11 +156,13 @@
                           };
                           var tableBody = document.getElementById('id_table_body').innerHTML = "";
                           document.getElementById('id_cart_grand_total').innerHTML = 0;
+                          document.getElementById('id_tip_amount').innerHTML = 0;
                           document.getElementById('id_cartItemCount').innerHTML = 0;
                         };
 
                         var submitOrder = function(url){
                           var data = cartObject;
+                          data['tip'] =document.getElementById('id_tip_amount').value;
                           console.log(data );
 
                           $.ajax({

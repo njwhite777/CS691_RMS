@@ -27,6 +27,7 @@ class OrderResource(Resource):
 
     def post(self):
         args = parser.parse_args()
+        print(args)
         o = Order(total_price=args.total_price,order_status=0,restaurant_id=args.restaurant,tip=args.tip)
         r = Restaurant.query.get(args.restaurant)
         db.session.add(o)
